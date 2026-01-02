@@ -192,7 +192,7 @@ Themes = {
 			["calendarx"] = "rbxassetid://10709789407",
 			["calendarx2"] = "rbxassetid://10709789329",
 			["camera"] = "rbxassetid://10709789686",
-			["cameraoff"] = "rbxassetid://10747822677",
+			["cameraoff"] = "rbxassetid://10709789686",
 			["car"] = "rbxassetid://10709789810",
 			["carrot"] = "rbxassetid://10709789960",
 			["cast"] = "rbxassetid://10709790097",
@@ -2869,3 +2869,4 @@ end
 	return Window
 end
 return redzlib
+
