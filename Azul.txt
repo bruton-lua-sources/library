@@ -23,16 +23,16 @@ Themes = {
         ["Color Dark Text"] = Color3.fromRGB(255, 200, 230)
     },
     Dark = {  
-        ["Color Hub 1"] = ColorSequence.new({  
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(180, 0, 180)),  
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(220, 0, 220)),  
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(180, 0, 180))  
-        }),  
-        ["Color Hub 2"] = Color3.fromRGB(180, 0, 180),  
-        ["Color Stroke"] = Color3.fromRGB(255, 182, 193),  
-        ["Color Theme"] = Color3.fromRGB(10, 10, 10),  
-        ["Color Text"] = Color3.fromRGB(255, 255, 255),  
-        ["Color Dark Text"] = Color3.fromRGB(255, 255, 255)
+        ["Color Hub 1"] = ColorSequence.new({
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(110,110,110)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(180,180,180)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(110,110,110))
+}),
+["Color Hub 2"] = Color3.fromRGB(160,160,160),
+["Color Stroke"] = Color3.fromRGB(140,140,140),
+["Color Theme"] = Color3.fromRGB(12,12,12),
+["Color Text"] = Color3.fromRGB(230,230,230),
+["Color Dark Text"] = Color3.fromRGB(180,180,180)
     },
 }, 
 
@@ -192,7 +192,7 @@ Themes = {
 			["calendarx"] = "rbxassetid://10709789407",
 			["calendarx2"] = "rbxassetid://10709789329",
 			["camera"] = "rbxassetid://10709789686",
-			["cameraoff"] = "rbxassetid://10709789686",
+			["cameraoff"] = "rbxassetid://10747822677",
 			["car"] = "rbxassetid://10709789810",
 			["carrot"] = "rbxassetid://10709789960",
 			["cast"] = "rbxassetid://10709790097",
@@ -1089,7 +1089,7 @@ local ScreenGui = Create("ScreenGui", CoreGui, {
 	})
 })
 local ClickSound = Instance.new("Sound", ScreenGui)
-ClickSound.SoundId = "rbxassetid://1412830636"
+ClickSound.SoundId = "rbxassetid://"
 ClickSound.Volume = 0.5
 
 local function PlaySound()
@@ -1444,7 +1444,7 @@ local WindowBackground = Create("ImageLabel", MainFrame, {
     Size = UDim2.new(1, 0, 1, 0),
     Position = UDim2.new(0, 0, 0, 0),
     BackgroundTransparency = 1,
-    Image = "rbxassetid://138114425013807", 
+    Image = "rbxassetid://137219915900676", 
     ImageTransparency = 0.2,
     ScaleType = Enum.ScaleType.Crop,
     ZIndex = 0
@@ -1725,7 +1725,7 @@ end
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
 			Title = "BRUTON HUB",  
-			Text = "متاكد تريد تغلق؟ ", 
+			Text = "متاكد تريد تغلق سكربت\n☹️", 
 			Options = {
 				{"نعم", function()  
 					ScreenGui:Destroy()
@@ -2869,4 +2869,3 @@ end
 	return Window
 end
 return redzlib
-
