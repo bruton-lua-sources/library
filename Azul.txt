@@ -2827,7 +2827,7 @@ end
 		Size = UDim2.new(1, -14, 0, 16),
 		AnchorPoint = Vector2.new(0.5, 1),
 		Position = UDim2.new(0.5, 0, 1, -7),
-		Text = "Join",
+		Text = "دخول",
 		Font = Enum.Font.GothamBold,
 		TextSize = 12,
 		TextColor3 = Color3.fromRGB(240, 220, 255),
@@ -2841,7 +2841,7 @@ end
 
 		ClickDelay = true
 		SetProps(JoinButton, {
-			Text = "نسخ الى الحافضة",
+			Text = "تم نسخ رابط قروب تلي الى الحافضة",
 			BackgroundColor3 = Color3.fromRGB(90, 40, 150),
 			TextColor3 = Color3.fromRGB(200, 180, 220)
 		}) task.wait(5)
