@@ -756,7 +756,7 @@ function brutonlib:MakeWindow(Configs)
     local ToggleIcon = tostring(Configs.ToggleIcon or "rbxassetid://83114982417764")
     local WIcon = Configs[4] or Configs.Icon or Configs.ScriptIcon
     local WTitle = Configs[1] or Configs.Name or Configs.Title or "SP Lib v2"
-    local WMiniText = Configs[2] or Configs.SubTitle or Configs.SubName or "by : SP Hub"
+    local WMiniText = Configs[2] or Configs.SubTitle or Configs.SubName or "by : BRUTON Hub"
     RainbowMainFrameDefault = Configs.RainbowMainFrameDefault or Configs.RainbowMainFrame or false
     RainbowTitleDefault = Configs.RainbowTitleDefault or Configs.RainbowTitle or false
     RainbowSubTitleDefault = Configs.RainbowSubTitleDefault or Configs.RainbowSubTitle or false
@@ -764,8 +764,8 @@ function brutonlib:MakeWindow(Configs)
 
 function brutonlib:MakeWindow(Configs)
 
-    local WTitle = Configs[1] or Configs.Name or Configs.Title or "SP Lib v2"
-    local WMiniText = Configs[2] or Configs.SubTitle or Configs.SubName or "by : SP Hub"
+    local WTitle = Configs[1] or Configs.Name or Configs.Title or "BRUTON Lib v2"
+    local WMiniText = Configs[2] or Configs.SubTitle or Configs.SubName or "by : BRUTON Hub"
     local WIcon = Configs[4] or Configs.Icon or Configs.ScriptIcon
 
     local SaveConfig = Configs.SaveFolder or Configs.SaveConfig or WTitle
