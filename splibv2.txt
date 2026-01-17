@@ -852,14 +852,14 @@ function splib:MakeWindow(Configs)
     return Window
 end
 	
-	local UISizeX, UISizeY = unpack(splib.Save.UISize)
-local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
-    Size = UDim2.fromOffset(UISizeX * 0.8, UISizeY * 0.8),
-    Position = UDim2.new(0.5, -UISizeX * 0.4, 0.5, -UISizeY * 0.4),
-    BackgroundTransparency = 0,
-    Name = "Hub",
-    Visible = true
+		local UISizeX, UISizeY = unpack(splib.Save.UISize)
+	local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
+    Size = UDim2.fromOffset(UISizeX, UISizeY),
+    Position = UDim2.new(0.5, -UISizeX/2, 0.5, -UISizeY/2),
+    BackgroundTransparency = 1,
+    Name = "Hub"
 }), "Main")
+
 local WindowBackground = Create("ImageLabel", MainFrame, {
     Name = "WindowBackground",
     Size = UDim2.new(1, 0, 1, 0),
@@ -871,68 +871,26 @@ local WindowBackground = Create("ImageLabel", MainFrame, {
     ZIndex = 0
 })
 Make("Corner", WindowBackground)
-MakeDrag(MainFrame)
+
 Make("Gradient", MainFrame, {
     Rotation = 45
 })
+MakeDrag(MainFrame)
 
-local originalMainPos = MainFrame.Position
+local MainCorner = Make("Corner", MainFrame)
 
-local function isHalfOutside(frame)
-    local absPos = frame.AbsolutePosition
-    local absSize = frame.AbsoluteSize
-    local screenSize = workspace.CurrentCamera.ViewportSize
+local Components = Create("Folder", MainFrame, {
+    Name = "Components"
+})
 
-    local halfW = absSize.X / 2
-    local halfH = absSize.Y / 2
-
-    if absPos.X + absSize.X < halfW then
-        return true
-    elseif absPos.Y + absSize.Y < halfH then
-        return true
-    elseif absPos.X > screenSize.X - halfW then
-        return true
-    elseif absPos.Y > screenSize.Y - halfH then
-        return true
-    end
-    return false
-end
-
-task.spawn(function()
-    while task.wait(1) do
-        if isHalfOutside(MainFrame) then
-            local leftTime = 2
-            while leftTime > 0 do
-                task.wait(1)
-                if not isHalfOutside(MainFrame) then
-                    break
-                end
-                leftTime -= 1
-            end
-            if isHalfOutside(MainFrame) then
-                TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
-                    Position = originalMainPos
-                }):Play()
-            end
-        end
-    end
-end)
-
-local MainCorner = Make("Corner", MainFrame, UDim.new(0, 10))
-
-
-	local Components = Create("Folder", MainFrame, {
-		Name = "Components"
-	})
-	
-	local DropdownHolder = Create("Folder", ScreenGui, {
-		Name = "Dropdown"
-	})
+local DropdownHolder = Create("Folder", ScreenGui, {
+    Name = "Dropdown"
+})
 
     local CustomColorHolder = Create("Folder", ScreenGui, {
 	    Name = "CustomColor"
     })
-	
+    
 	local TopBar = Create("Frame", Components, {
 		Size = UDim2.new(1, 0, 0, 28),
 		BackgroundTransparency = 1,
