@@ -4827,34 +4827,26 @@ Tab:AddToggle({
     end,
     __force_container = SettingTab
 })
-local windowRainbowEnabled = false
+Tab:AddSection({
+    Name = "Background settings",
+    __force_container = SettingTab
+})
+local windowTransparency = 0.2
 
-Tab:AddToggle({
-    Name = "Rainbow WindowBackground",
-    Flag = "RainbowWindowBackground",
-    Default = false,
-    Callback = function(enabled)
-        windowRainbowEnabled = enabled
-        if not enabled and WindowBackground then
-            WindowBackground.BackgroundColor3 = Theme["Color Hub 1"].Keypoints[1].Value
+Tab:AddSlider({
+    Name = "background transparency",
+    Min = 0,
+    Max = 1,
+    Default = windowTransparency,
+    Float = 0.01,
+    Callback = function(value)
+        windowTransparency = value
+        if WindowBackground and WindowBackground.Parent then
+            WindowBackground.ImageTransparency = windowTransparency
         end
     end,
     __force_container = SettingTab
 })
-
-task.spawn(function()
-    while true do
-        if windowRainbowEnabled and WindowBackground and WindowBackground.Parent then
-            local t = tick() * 0.5
-            local r = math.sin(t) * 0.5 + 0.5
-            local g = math.sin(t + 2) * 0.5 + 0.5
-            local b = math.sin(t + 4) * 0.5 + 0.5
-            local rainbowColor = Color3.new(r, g, b)
-            WindowBackground.BackgroundColor3 = rainbowColor
-        end
-        task.wait()
-    end
-end)
 local removeWindowImageEnabled = false
 
 Tab:AddToggle({
@@ -4873,6 +4865,127 @@ Tab:AddToggle({
     end,
     __force_container = SettingTab
 })
+Tab:AddTextbox({
+    Name = "Set Window Image ID",
+    PlaceholderText = "ID» EX = 12345678",
+    Default = "",
+    ClearText = false,
+    Callback = function(value)
+        if WindowBackground and WindowBackground.Parent and value ~= "" then
+            WindowBackground.Image = "rbxassetid://" .. value
+        end
+    end,
+    __force_container = SettingTab
+})
+Tab:AddSection({
+    Name = "spam image",
+    __force_container = SettingTab
+})
+
+Tab:AddParagraph({ "You must upload the image to Roblox \nWait three minutes and take the hand for the photo\nDo not upload images that are offensive or violate Roblox's rules, or you will be banned. " })
+local windowImageID1 = ""
+local windowImageID2 = ""
+local windowImageID3 = ""
+local windowImageID4 = ""
+local windowImageID5 = ""
+
+local changeSpeed = 2
+local autoChangeEnabled = false
+
+Tab:AddTextbox({
+    Name = "Window Image ID 1",
+    PlaceholderText = "ID 1",
+    Default = "",
+    ClearText = false,
+    Callback = function(value)
+        windowImageID1 = value
+    end,
+    __force_container = SettingTab
+})
+
+Tab:AddTextbox({
+    Name = "Window Image ID 2",
+    PlaceholderText = "ID 2",
+    Default = "",
+    ClearText = false,
+    Callback = function(value)
+        windowImageID2 = value
+    end,
+    __force_container = SettingTab
+})
+
+Tab:AddTextbox({
+    Name = "Window Image ID 3",
+    PlaceholderText = "ID 3",
+    Default = "",
+    ClearText = false,
+    Callback = function(value)
+        windowImageID3 = value
+    end,
+    __force_container = SettingTab
+})
+
+Tab:AddTextbox({
+    Name = "Window Image ID 4",
+    PlaceholderText = "ID 4",
+    Default = "",
+    ClearText = false,
+    Callback = function(value)
+        windowImageID4 = value
+    end,
+    __force_container = SettingTab
+})
+
+Tab:AddTextbox({
+    Name = "Window Image ID 5",
+    PlaceholderText = "ID 5",
+    Default = "",
+    ClearText = false,
+    Callback = function(value)
+        windowImageID5 = value
+    end,
+    __force_container = SettingTab
+})
+
+Tab:AddSlider({
+    Name = "Speed in seconds  ",
+    Min = 0.1,
+    Max = 10,
+    Default = changeSpeed,
+    Float = 1,
+    Callback = function(value)
+        changeSpeed = value
+    end,
+    __force_container = SettingTab
+})
+
+Tab:AddToggle({
+    Name = "Auto Change Background",
+    Flag = "AutoChangeBackground",
+    Default = autoChangeEnabled,
+    Callback = function(enabled)
+        autoChangeEnabled = enabled
+    end,
+    __force_container = SettingTab
+})
+
+task.spawn(function()
+    local index = 1
+    local ids = {function() return windowImageID1 end, function() return windowImageID2 end, function() return windowImageID3 end, function() return windowImageID4 end, function() return windowImageID5 end}
+    while true do
+        if autoChangeEnabled and WindowBackground and WindowBackground.Parent then
+            local nextID = ids[index]()
+            if nextID ~= "" then
+                WindowBackground.Image = "rbxassetid://" .. nextID
+            end
+            index = index + 1
+            if index > #ids then
+                index = 1
+            end
+        end
+        task.wait(changeSpeed)
+    end
+end)
 		return Tab
 	end
 	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
