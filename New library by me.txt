@@ -4744,66 +4744,25 @@ rainbowStroke = Make("Stroke", MainFrame, {
 })
 
 local rainbowColors = {
-    Color3.fromRGB(20, 20, 20),
-    Color3.fromRGB(50, 50, 50),
-    Color3.fromRGB(80, 80, 80),
-    Color3.fromRGB(110, 110, 110),
-    Color3.fromRGB(130, 130, 130),
-    Color3.fromRGB(150, 150, 150),
-    Color3.fromRGB(180, 180, 180)
+    Red = Color3.fromRGB(255, 0, 0),
+    Orange = Color3.fromRGB(255, 165, 0),
+    Yellow = Color3.fromRGB(255, 255, 0),
+    Green = Color3.fromRGB(0, 255, 0),
+    Blue = Color3.fromRGB(0, 0, 255),
+    Purple = Color3.fromRGB(128, 0, 128),
+    Pink = Color3.fromRGB(255, 105, 180),
+    Cyan = Color3.fromRGB(0, 255, 255),
+    White = Color3.fromRGB(255, 255, 255),
+    Black = Color3.fromRGB(0, 0, 0)
 }
 
-local function lerpColor(c1, c2, alpha)
-    return Color3.new(
-        c1.R + (c2.R - c1.R) * alpha,
-        c1.G + (c2.G - c1.G) * alpha,
-        c1.B + (c2.B - c1.B) * alpha
-    )
-end
-
-local function slowGradient(target)
-    local index = 1
-    local alpha = 0
-    while target and target.Parent do
-        local nextIndex = (index % #rainbowColors) + 1
-        target.Color = lerpColor(rainbowColors[index], rainbowColors[nextIndex], alpha)
-        alpha = alpha + 0.002
-        if alpha >= 1 then
-            alpha = 0
-            index = nextIndex
-        end
-        task.wait()
-    end
-end
-
 task.spawn(function()
-    slowGradient(rainbowStroke)
-end)
-
-local SubTitle = Title:FindFirstChild("SubTitle")
-local titleRainbowEnabled = false
-local subtitleRainbowEnabled = false
-
-task.spawn(function()
-    local index = 1
-    local alpha = 0
-    while true do
-        local nextIndex = (index % #rainbowColors) + 1
-        local grayColor = lerpColor(rainbowColors[index], rainbowColors[nextIndex], alpha)
-
-        if titleRainbowEnabled and Title then
-            Title.TextColor3 = grayColor
-        end
-
-        if subtitleRainbowEnabled and SubTitle then
-            SubTitle.TextColor3 = grayColor
-        end
-
-        alpha = alpha + 0.002
-        if alpha >= 1 then
-            alpha = 0
-            index = nextIndex
-        end
+    while rainbowStroke and rainbowStroke.Parent do
+        local t = tick() * 0.5
+        local r = math.sin(t) * 0.5 + 0.5
+        local g = math.sin(t + 2) * 0.5 + 0.5
+        local b = math.sin(t + 4) * 0.5 + 0.5
+        rainbowStroke.Color = Color3.new(r, g, b)
         task.wait()
     end
 end)
@@ -4817,6 +4776,31 @@ Tab:AddToggle({
     end,
     __force_container = SettingTab
 })
+
+local SubTitle = Title:FindFirstChild("SubTitle")
+
+local titleRainbowEnabled = false
+local subtitleRainbowEnabled = false
+
+task.spawn(function()
+    while true do
+        local t = tick() * 0.5
+        local r = math.sin(t) * 0.5 + 0.5
+        local g = math.sin(t + 2) * 0.5 + 0.5
+        local b = math.sin(t + 4) * 0.5 + 0.5
+        local rainbowColor = Color3.new(r, g, b)
+
+        if titleRainbowEnabled and Title then
+            Title.TextColor3 = rainbowColor
+        end
+
+        if subtitleRainbowEnabled and SubTitle then
+            SubTitle.TextColor3 = rainbowColor
+        end
+
+        task.wait()
+    end
+end)
 
 Tab:AddToggle({
     Name = "Rainbow Title",
@@ -4843,11 +4827,38 @@ Tab:AddToggle({
     end,
     __force_container = SettingTab
 })
+local windowRainbowEnabled = false
 
-return Tab
-end
-MinimizeButton.Activated:Connect(Window.MinimizeBtn)
-return Window
+Tab:AddToggle({
+    Name = "Rainbow WindowBackground",
+    Flag = "RainbowWindowBackground",
+    Default = false,
+    Callback = function(enabled)
+        windowRainbowEnabled = enabled
+        if not enabled and WindowBackground then
+            WindowBackground.BackgroundColor3 = Theme["Color Hub 1"].Keypoints[1].Value
+        end
+    end,
+    __force_container = SettingTab
+})
+
+task.spawn(function()
+    while true do
+        if windowRainbowEnabled and WindowBackground and WindowBackground.Parent then
+            local t = tick() * 0.5
+            local r = math.sin(t) * 0.5 + 0.5
+            local g = math.sin(t + 2) * 0.5 + 0.5
+            local b = math.sin(t + 4) * 0.5 + 0.5
+            local rainbowColor = Color3.new(r, g, b)
+            WindowBackground.BackgroundColor3 = rainbowColor
+        end
+        task.wait()
+    end
+end)
+		return Tab
+	end
+	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
+	return Window
 end
 
 return brutonlib
