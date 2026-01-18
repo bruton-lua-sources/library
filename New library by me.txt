@@ -4855,6 +4855,24 @@ task.spawn(function()
         task.wait()
     end
 end)
+local removeWindowImageEnabled = false
+
+Tab:AddToggle({
+    Name = "Remove Window Image",
+    Flag = "RemoveWindowImage",
+    Default = false,
+    Callback = function(enabled)
+        removeWindowImageEnabled = enabled
+        if WindowBackground and WindowBackground.Parent then
+            if enabled then
+                WindowBackground.Image = ""
+            else
+                WindowBackground.Image = "rbxassetid://108740738491798"
+            end
+        end
+    end,
+    __force_container = SettingTab
+})
 		return Tab
 	end
 	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
