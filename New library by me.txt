@@ -810,7 +810,7 @@ function brutonlib:MakeWindow(Configs)
         Configs.IntroEnabled = true
     end
 
-    Configs.IntroText = Configs.IntroText or "SP Lib v2"
+    Configs.IntroText = Configs.IntroText or "bruton Lib v2"
     Configs.IntroIcon = Configs.IntroIcon or "rbxassetid://8834748103"
 
     local function LoadSequence()
@@ -909,7 +909,7 @@ local WindowBackground = Create("ImageLabel", MainFrame, {
     Size = UDim2.new(1, 0, 1, 0),
     Position = UDim2.new(0, 0, 0, 0),
     BackgroundTransparency = 1,
-    Image = "https://raw.githubusercontent.com/bruton-lua-sources/library/refs/heads/main/e7607ffd0ea587732be7801c30ac1135.jpg", 
+    Image = "rbxassetid://108740738491798", 
     ImageTransparency = 0.2,
     ScaleType = Enum.ScaleType.Crop,
     ZIndex = 0
