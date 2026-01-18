@@ -4761,19 +4761,23 @@ local function lerpColor(c1, c2, alpha)
     )
 end
 
-task.spawn(function()
+local function slowGradient(target)
     local index = 1
     local alpha = 0
-    while rainbowStroke and rainbowStroke.Parent do
+    while target and target.Parent do
         local nextIndex = (index % #rainbowColors) + 1
-        rainbowStroke.Color = lerpColor(rainbowColors[index], rainbowColors[nextIndex], alpha)
-        alpha = alpha + 0.01
+        target.Color = lerpColor(rainbowColors[index], rainbowColors[nextIndex], alpha)
+        alpha = alpha + 0.002
         if alpha >= 1 then
             alpha = 0
             index = nextIndex
         end
         task.wait()
     end
+end
+
+task.spawn(function()
+    slowGradient(rainbowStroke)
 end)
 
 local SubTitle = Title:FindFirstChild("SubTitle")
@@ -4795,7 +4799,7 @@ task.spawn(function()
             SubTitle.TextColor3 = grayColor
         end
 
-        alpha = alpha + 0.01
+        alpha = alpha + 0.002
         if alpha >= 1 then
             alpha = 0
             index = nextIndex
