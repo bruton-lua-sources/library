@@ -4744,29 +4744,63 @@ rainbowStroke = Make("Stroke", MainFrame, {
 })
 
 local rainbowColors = {
-    Red = Color3.fromRGB(60, 60, 60),
-    Orange = Color3.fromRGB(90, 90, 90),
-    Yellow = Color3.fromRGB(130, 130, 130),
-    Green = Color3.fromRGB(80, 80, 80),
-    Blue = Color3.fromRGB(50, 50, 50),
-    Purple = Color3.fromRGB(70, 65, 80),
-    Pink = Color3.fromRGB(110, 110, 110),
-    Cyan = Color3.fromRGB(95, 95, 95),
-    White = Color3.fromRGB(180, 180, 180),
-    Black = Color3.fromRGB(20, 20, 20)
+    Color3.fromRGB(20, 20, 20),
+    Color3.fromRGB(50, 50, 50),
+    Color3.fromRGB(80, 80, 80),
+    Color3.fromRGB(110, 110, 110),
+    Color3.fromRGB(130, 130, 130),
+    Color3.fromRGB(150, 150, 150),
+    Color3.fromRGB(180, 180, 180)
 }
 
-local function getGrayColor(index)
-    local keys = {"Red","Orange","Yellow","Green","Blue","Purple","Pink","Cyan","White","Black"}
-    return rainbowColors[keys[(index-1)%#keys + 1]]
+local function lerpColor(c1, c2, alpha)
+    return Color3.new(
+        c1.R + (c2.R - c1.R) * alpha,
+        c1.G + (c2.G - c1.G) * alpha,
+        c1.B + (c2.B - c1.B) * alpha
+    )
 end
 
 task.spawn(function()
     local index = 1
+    local alpha = 0
     while rainbowStroke and rainbowStroke.Parent do
-        rainbowStroke.Color = getGrayColor(index)
-        index += 1
-        task.wait(0.2)
+        local nextIndex = (index % #rainbowColors) + 1
+        rainbowStroke.Color = lerpColor(rainbowColors[index], rainbowColors[nextIndex], alpha)
+        alpha = alpha + 0.01
+        if alpha >= 1 then
+            alpha = 0
+            index = nextIndex
+        end
+        task.wait()
+    end
+end)
+
+local SubTitle = Title:FindFirstChild("SubTitle")
+local titleRainbowEnabled = false
+local subtitleRainbowEnabled = false
+
+task.spawn(function()
+    local index = 1
+    local alpha = 0
+    while true do
+        local nextIndex = (index % #rainbowColors) + 1
+        local grayColor = lerpColor(rainbowColors[index], rainbowColors[nextIndex], alpha)
+
+        if titleRainbowEnabled and Title then
+            Title.TextColor3 = grayColor
+        end
+
+        if subtitleRainbowEnabled and SubTitle then
+            SubTitle.TextColor3 = grayColor
+        end
+
+        alpha = alpha + 0.01
+        if alpha >= 1 then
+            alpha = 0
+            index = nextIndex
+        end
+        task.wait()
     end
 end)
 
@@ -4779,29 +4813,6 @@ Tab:AddToggle({
     end,
     __force_container = SettingTab
 })
-
-local SubTitle = Title:FindFirstChild("SubTitle")
-
-local titleRainbowEnabled = false
-local subtitleRainbowEnabled = false
-
-task.spawn(function()
-    local index = 1
-    while true do
-        local grayColor = getGrayColor(index)
-
-        if titleRainbowEnabled and Title then
-            Title.TextColor3 = grayColor
-        end
-
-        if subtitleRainbowEnabled and SubTitle then
-            SubTitle.TextColor3 = grayColor
-        end
-
-        index += 1
-        task.wait(0.2)
-    end
-end)
 
 Tab:AddToggle({
     Name = "Rainbow Title",
