@@ -683,7 +683,26 @@ local function GetColor(Instance)
 	return nil
 end
 
--- /////////// --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
+-- BRUTON HUB  --
 function brutonlib:GetIcon(index)
 	if type(index) ~= "string" or index:find("rbxassetid://") or #index == 0 then
 		return index
@@ -749,37 +768,18 @@ local RainbowSubTitleDefault
 
 function brutonlib:MakeWindow(Configs)
 
-    local BySubFrame = Instance.new("Frame")
-BySubFrame.Name = "BySubFrame"
-BySubFrame.Size = UDim2.new(0, 150, 0, 16)
-BySubFrame.BackgroundTransparency = 1
-BySubFrame.Parent = ParentFrame
+    ToggleEnabled = (Configs.Toggle == nil and Configs.EnableToggle == nil) 
+       or (Configs.Toggle == true or Configs.EnableToggle == true)
+    EnableSetting = (Configs.Setting == nil and Configs.EnableSetting == nil)
+       or (Configs.Setting == true or Configs.EnableSetting == true)
+    local ToggleIcon = tostring(Configs.ToggleIcon or "rbxassetid://83114982417764")
+    local WIcon = Configs[4] or Configs.Icon or Configs.ScriptIcon
+    local WTitle = Configs[1] or Configs.Name or Configs.Title or "bruton Lib v2"
+    local WMiniText = Configs[2] or Configs.SubTitle or Configs.SubName or "by : BRUTON Hub"
+    RainbowMainFrameDefault = Configs.RainbowMainFrameDefault or Configs.RainbowMainFrame or false
+    RainbowTitleDefault = Configs.RainbowTitleDefault or Configs.RainbowTitle or false
+    RainbowSubTitleDefault = Configs.RainbowSubTitleDefault or Configs.RainbowSubTitle or false
 
-local BySubText = Instance.new("TextLabel")
-BySubText.Name = "BySubText"
-BySubText.Size = UDim2.new(1, 0, 1, 0)
-BySubText.BackgroundTransparency = 1
-BySubText.Text = WMiniText
-BySubText.Font = WTitleLabel.Font
-BySubText.TextSize = math.max(WTitleLabel.TextSize - 4, 10)
-BySubText.TextXAlignment = Enum.TextXAlignment.Left
-BySubText.TextYAlignment = Enum.TextYAlignment.Center
-BySubText.TextColor3 = WTitleLabel.TextColor3
-BySubText.TextStrokeTransparency = WTitleLabel.TextStrokeTransparency
-BySubText.TextStrokeColor3 = WTitleLabel.TextStrokeColor3
-BySubText.Parent = BySubFrame
-
-WTitleLabel:GetPropertyChangedSignal("TextColor3"):Connect(function()
-    BySubText.TextColor3 = WTitleLabel.TextColor3
-end)
-
-WTitleLabel:GetPropertyChangedSignal("TextStrokeColor3"):Connect(function()
-    BySubText.TextStrokeColor3 = WTitleLabel.TextStrokeColor3
-end)
-
-WTitleLabel:GetPropertyChangedSignal("TextStrokeTransparency"):Connect(function()
-    BySubText.TextStrokeTransparency = WTitleLabel.TextStrokeTransparency
-end)
 
 function brutonlib:MakeWindow(Configs)
 
