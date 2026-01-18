@@ -1168,15 +1168,7 @@ end)
 		AutoButtonColor = false,
 		Name = "Close"
 	})
-
-local SettingButton = SetProps(CloseButton:Clone(), {
-    Position = UDim2.new(1, -60, 0.5),
-    Size = UDim2.new(0, 14, 0, 14),
-    Image = "rbxassetid://11385220704",
-    Name = "Settings",
-    Visible = EnableSetting
-})
-
+	
 	local MinimizeButton = SetProps(CloseButton:Clone(), {
 		Position = UDim2.new(1, -35, 0.5),
 		Image = "rbxassetid://10734896206",
@@ -1185,39 +1177,23 @@ local SettingButton = SetProps(CloseButton:Clone(), {
 	
 	SetChildren(ButtonsFolder, {
 		CloseButton,
-		MinimizeButton,
-        SettingButton
+		MinimizeButton
 	})
 	
 	local Minimized, SaveSize, WaitClick
 	local Window, FirstTab = {}, false
-
-local shouldClearToggles = Configs.CloseCallback == true
-
-local function CloseUI()
-    for _, conn in ipairs(bindConnections) do
-        if typeof(conn) == "RBXScriptConnection" and conn.Connected then
-            conn:Disconnect()
-        end
-    end
-    table.clear(bindConnections)
-
-    if brutonlib.ClearAllBinds then
-        brutonlib:ClearAllBinds()
-    end
-    if shouldClearToggles and brutonlib.ClearAllToggles then
-        brutonlib:ClearAllToggles()
-    end
-
-    ScreenGui:Destroy()
-end
-
-function brutonlib:Destroy()
-CloseUI()
-end
-
-CloseButton.Activated:Connect(CloseUI)
-
+	function Window:CloseBtn()
+		local Dialog = Window:Dialog({
+			Title = "BRUTON HUB",  
+			Text = "متاكد تريد تغلق سكربت\n☹️", 
+			Options = {
+				{"نعم", function()  
+					ScreenGui:Destroy()
+				end},
+				{"لا"} 
+			}
+		})
+	end
 SettingButton.MouseButton1Click:Connect(function()
 	for _, container in ipairs(ContainerList) do
 		container.Visible = false
