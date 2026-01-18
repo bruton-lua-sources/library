@@ -4756,14 +4756,17 @@ local rainbowColors = {
     Black = Color3.fromRGB(20, 20, 20)
 }
 
+local function getGrayColor(index)
+    local keys = {"Red","Orange","Yellow","Green","Blue","Purple","Pink","Cyan","White","Black"}
+    return rainbowColors[keys[(index-1)%#keys + 1]]
+end
+
 task.spawn(function()
+    local index = 1
     while rainbowStroke and rainbowStroke.Parent do
-        local t = tick() * 0.5
-        local r = math.sin(t) * 0.5 + 0.5
-        local g = math.sin(t + 2) * 0.5 + 0.5
-        local b = math.sin(t + 4) * 0.5 + 0.5
-        rainbowStroke.Color = Color3.new(r, g, b)
-        task.wait()
+        rainbowStroke.Color = getGrayColor(index)
+        index += 1
+        task.wait(0.2)
     end
 end)
 
@@ -4783,22 +4786,20 @@ local titleRainbowEnabled = false
 local subtitleRainbowEnabled = false
 
 task.spawn(function()
+    local index = 1
     while true do
-        local t = tick() * 0.5
-        local r = math.sin(t) * 0.5 + 0.5
-        local g = math.sin(t + 2) * 0.5 + 0.5
-        local b = math.sin(t + 4) * 0.5 + 0.5
-        local rainbowColor = Color3.new(r, g, b)
+        local grayColor = getGrayColor(index)
 
         if titleRainbowEnabled and Title then
-            Title.TextColor3 = rainbowColor
+            Title.TextColor3 = grayColor
         end
 
         if subtitleRainbowEnabled and SubTitle then
-            SubTitle.TextColor3 = rainbowColor
+            SubTitle.TextColor3 = grayColor
         end
 
-        task.wait()
+        index += 1
+        task.wait(0.2)
     end
 end)
 
@@ -4828,10 +4829,10 @@ Tab:AddToggle({
     __force_container = SettingTab
 })
 
-		return Tab
-	end
-	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
-	return Window
+return Tab
+end
+MinimizeButton.Activated:Connect(Window.MinimizeBtn)
+return Window
 end
 
 return brutonlib
