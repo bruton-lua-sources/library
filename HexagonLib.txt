@@ -2049,17 +2049,26 @@ function Window:MakeTab(paste, Configs)
 	}), "Text")
 	local OriginalIcon = LabelIcon.Image
 
-task.spawn(function()
-	while LabelIcon and LabelIcon.Parent do
-		task.wait(3)
-		if not (LabelIcon and LabelIcon.Parent) then break end
-		LabelIcon.Image = "rbxassetid://91458338127515"
-		task.wait(4)
-		if LabelIcon and LabelIcon.Parent then
-			LabelIcon.Image = OriginalIcon
+	task.spawn(function()
+		while LabelIcon and LabelIcon.Parent do
+			task.wait(3)
+			if not (LabelIcon and LabelIcon.Parent) then break end
+			CreateTween({LabelIcon, "ImageTransparency", 1, 0.25})
+			task.wait(0.25)
+			if not (LabelIcon and LabelIcon.Parent) then break end
+			LabelIcon.Image = "rbxassetid://114599285977543"
+			CreateTween({LabelIcon, "ImageTransparency", 0, 0.25})
+			task.wait(4)
+			if not (LabelIcon and LabelIcon.Parent) then break end
+			CreateTween({LabelIcon, "ImageTransparency", 1, 0.25})
+			task.wait(0.25)
+			if LabelIcon and LabelIcon.Parent then
+				LabelIcon.Image = OriginalIcon
+				CreateTween({LabelIcon, "ImageTransparency", 0, 0.25})
+			end
 		end
-	end
-end)
+	end)
+
 	local Selected = InsertTheme(Create("Frame", TabSelect, {
 		Size = FirstTab and UDim2.new(0, 4, 0, 4) or UDim2.new(0, 4, 0, 13),
 		Position = UDim2.new(0, 1, 0.5),
