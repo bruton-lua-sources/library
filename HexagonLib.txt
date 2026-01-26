@@ -1452,47 +1452,65 @@ function redzlib:MakeWindow(Configs)
 	
 	local RunService = game:GetService("RunService")
 
+local WindowBackground = Create("ImageLabel", MainFrame, {
+    Name = "WindowBackground",
+    Size = UDim2.new(1, 0, 1, 0),
+    Position = UDim2.new(0, 0, 0, 0),
+    BackgroundTransparency = 1,
+    Image = "rbxassetid://82496116907268",
+    ImageTransparency = 0.2,
+    ScaleType = Enum.ScaleType.Crop,
+    ZIndex = 0
+})
+Make("Corner", WindowBackground)
+
 local BloodLayer = Instance.new("Frame")
-BloodLayer.Size = UDim2.new(1, 0, 1, 0)
+BloodLayer.Size = UDim2.new(1,0,1,0)
+BloodLayer.Position = UDim2.new(0,0,0,0)
 BloodLayer.BackgroundTransparency = 1
 BloodLayer.ZIndex = WindowBackground.ZIndex + 1
 BloodLayer.Parent = WindowBackground
 
-local function SpawnBloodDrop()
-	local drop = Instance.new("ImageLabel")
-	drop.BackgroundTransparency = 1
-	drop.Image = "rbxassetid://4576475446"    --HI NOVA
-	drop.ImageColor3 = Color3.fromRGB(140, 0, 0)
-	drop.ImageTransparency = 0.2
-	drop.Size = UDim2.new(0, math.random(6, 12), 0, math.random(18, 30))
-	drop.Position = UDim2.new(math.random(), 0, -0.2, 0)
-	drop.ZIndex = BloodLayer.ZIndex
-	drop.Parent = BloodLayer
+local pulseAmount = 0
+RunService.RenderStepped:Connect(function(dt)
+    pulseAmount = pulseAmount + dt
+    local blurIntensity = 0.05 + 0.05 * math.sin(pulseAmount*2)
+    WindowBackground.ImageTransparency = 0.2 + blurIntensity
+end)
 
-	local speed = math.random(20, 35) / 100
-	task.spawn(function()
-		while drop and drop.Parent do
-			drop.Position += UDim2.new(0, 0, speed * RunService.Heartbeat:Wait(), 0)
-			if drop.Position.Y.Scale > 1.2 then
-				drop:Destroy()
-				break
-			end
-		end
-	end)
+local function createDrop()
+    local drop = Instance.new("Frame")
+    drop.Size = UDim2.new(0, math.random(2,4), 0, math.random(12,20))
+    drop.Position = UDim2.new(math.random(), 0, -0.1, 0)
+    drop.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
+    drop.BackgroundTransparency = 0.25
+    drop.BorderSizePixel = 0
+    drop.ZIndex = BloodLayer.ZIndex
+    drop.Parent = BloodLayer
+
+    local corner = Instance.new("UICorner", drop)
+    corner.CornerRadius = UDim.new(1,0)
+
+    local speed = math.random(8,14) / 1000
+    local conn
+    conn = RunService.RenderStepped:Connect(function(dt)
+        if not drop.Parent then
+            conn:Disconnect()
+            return
+        end
+        drop.Position = drop.Position + UDim2.new(0,0,speed,0)
+        if drop.Position.Y.Scale > 1.1 then
+            drop:Destroy()
+            conn:Disconnect()
+        end
+    end)
 end
 
 task.spawn(function()
-	while WindowBackground and WindowBackground.Parent do
-		SpawnBloodDrop()
-		task.wait(math.random(10, 18) / 10)
-	end
-end)
-
-task.spawn(function()
-	while WindowBackground and WindowBackground.Parent do
-		WindowBackground.ImageTransparency = 0.18 + math.sin(tick() * 2) * 0.04
-		RunService.Heartbeat:Wait()
-	end
+    while true do
+        createDrop()
+        task.wait(math.random(20,40)/10)
+    end
 end)
 	Make("Gradient", MainFrame, {
 		Rotation = 45
