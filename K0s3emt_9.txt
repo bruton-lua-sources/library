@@ -4739,7 +4739,7 @@ Tab:AddSlider({
    __force_container = SettingTab
 })
 
-local ThemeMap = {
+--[[local ThemeMap = {
     ["أحمر"] = "Red",
     ["داكن جدًا"] = "Darker",
     ["داكن"] = "Dark",
@@ -4781,7 +4781,7 @@ end
 Tab:AddDropdown({
     Name = "ثيم المكتبة",
     Options = ThemeList,
-    Default = reverseThemeMap[brutonlib.Save.Theme] or "أحمر",
+    Default = reverseThemeMap[brutonlib.Save.Theme] or "بنفسجي",
     Callback = function(selectedArabic)
         local selectedTheme = ThemeMap[selectedArabic]
         brutonlib:SetTheme(selectedTheme)
@@ -4789,7 +4789,7 @@ Tab:AddDropdown({
         SaveJson("bruton library.json", brutonlib.Save)
     end,
     __force_container = SettingTab
-})
+})--]]
 --[[Tab:AddToggle({
   Name = "",
   Default = false,  
@@ -4835,7 +4835,7 @@ Tab:AddToggle({
     end,
     __force_container = SettingTab
 })--]] 
-Tab:AddSection({
+--[[Tab:AddSection({
     Name = "التلوين",
     __force_container = SettingTab
 })
@@ -4845,6 +4845,8 @@ local rainbowStroke
 rainbowStroke = Make("Stroke", MainFrame, {
     Thickness = 2
 })
+
+rainbowStroke.Transparency = 1
 
 local rainbowColors = {
     Red = Color3.fromRGB(255, 0, 0),
@@ -4873,9 +4875,9 @@ end)
 Tab:AddToggle({
     Name = "لون حواف الواجهة",
     Flag = "RainbowMainFrame",
-    Default = RainbowMainFrameDefault,
-    Callback = function(enabled)
-        rainbowStroke.Transparency = enabled and 0 or 1
+    Default = false,
+    Callback = function()
+        rainbowStroke.Transparency = 1
     end,
     __force_container = SettingTab
 })
@@ -4908,10 +4910,10 @@ end)
 Tab:AddToggle({
     Name = "لون العنوان الاساسي",
     Flag = "RainbowTitle",
-    Default = RainbowTitleDefault,
-    Callback = function(enabled)
-        titleRainbowEnabled = enabled
-        if not enabled and Title then
+    Default = false,
+    Callback = function()
+        titleRainbowEnabled = false
+        if Title then
             Title.TextColor3 = Theme["Color Text"]
         end
     end,
@@ -4921,16 +4923,16 @@ Tab:AddToggle({
 Tab:AddToggle({
     Name = "لون العنوان الثانوي",
     Flag = "RainbowSubTitle",
-    Default = RainbowSubTitleDefault,
-    Callback = function(enabled)
-        subtitleRainbowEnabled = enabled
-        if not enabled and SubTitle then
+    Default = false,
+    Callback = function()
+        subtitleRainbowEnabled = false
+        if SubTitle then
             SubTitle.TextColor3 = Theme["Color Dark Text"]
         end
     end,
     __force_container = SettingTab
-})
-Tab:AddSection({
+})--]] 
+--[[Tab:AddSection({
     Name = "اعدادات الخلفية",
     __force_container = SettingTab
 })
@@ -5071,7 +5073,7 @@ task.spawn(function()
         end
         task.wait(changeSpeed)
     end
-end)
+end)--]]
 		return Tab
 	end
 	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
