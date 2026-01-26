@@ -1557,34 +1557,7 @@ local DropdownHolder = Create("Folder", ScreenGui, {
 			Name = "SubTitle"
 		}), "DarkText")
 	}), "Text")
-	local Settings = {} 
-Settings.GlowSub = Settings.GlowSub or "HEXAGON HUB BROOKHAVEN  RP"
-Settings.GlowSubColor = Settings.GlowSubColor or Color3.fromRGB(3, 255, 99)
-Settings.GlowSubTitleColor = Settings.GlowSubTitleColor or Color3.fromRGB(0, 0, 0)
-
-local GlowSubFrame = vu26("Frame", vu206, {
-    Size = UDim2.new(0, 0, 0, 18),
-    BackgroundColor3 = Settings.GlowSubColor,
-    Name = "GlowSubFrame",
-})
-
-vu158("Corner", GlowSubFrame, UDim.new(0, 4))
-
-local GlowSubText = vu14(
-    vu26("TextLabel", GlowSubFrame, {
-        Position = UDim2.new(0.5, 0, 0.5, 0),
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        AutomaticSize = "X",
-        Text = Settings.GlowSub,
-        TextColor3 = Settings.GlowSubTitleColor,
-        BackgroundTransparency = 1,
-        TextXAlignment = "Center",
-        TextSize = 8,
-        Font = Enum.Font.GothamBold,
-        Name = "GlowSubText",
-    }),
-    "Text"
-)
+	
 	local MainScroll = InsertTheme(Create("ScrollingFrame", Components, {
 		Size = UDim2.new(0, brutonlib.Save.TabSize, 1, -TopBar.Size.Y.Offset),
 		ScrollBarImageColor3 = Theme["Color Theme"],
@@ -1619,114 +1592,114 @@ local GlowSubText = vu14(
 	})
 
 local ParticleContainer = Create("Frame", Containers, {
-		Size = UDim2.new(1, 0, 1, 0),
-		BackgroundTransparency = 1,
-		Name = "ThemeParticles",
-		ZIndex = -5,
-		ClipsDescendants = true
-	})
-	
-	local ParticleConfig = {
-	MaxParticles = 200,
-	SpawnRate = 0.35,
-	ParticleSize = {Min = 7, Max = 10},
-	ParticleSpeed = {Min = 15, Max = 25},
-	ParticleLifetime = 6
+    Size = UDim2.new(1, 0, 1, 0),
+    BackgroundTransparency = 1,
+    Name = "ThemeParticles",
+    ZIndex = -5,
+    ClipsDescendants = true
+})
+
+local ParticleConfig = {
+    MaxParticles = 200,
+    SpawnRate = 0.35,
+    ParticleSize = {Min = 7, Max = 10},
+    ParticleSpeed = {Min = 15, Max = 25},
+    ParticleLifetime = 6
 }
 
 local ActiveParticles = {}
 local LastSpawn = 0
 
 local function CreateCyberpunkParticle()
-	if #ActiveParticles >= ParticleConfig.MaxParticles then return end
+    if #ActiveParticles >= ParticleConfig.MaxParticles then return end
 
-	local containerSize = ParticleContainer.AbsoluteSize
-	local startX = math.random(10, containerSize.X - 10)
-	local startY = containerSize.Y + 20
+    local containerSize = ParticleContainer.AbsoluteSize
+    local startX = math.random(10, containerSize.X - 10)
+    local startY = containerSize.Y + 20
 
-	local size = math.random(ParticleConfig.ParticleSize.Min, ParticleConfig.ParticleSize.Max)
-	local speed = math.random(ParticleConfig.ParticleSpeed.Min, ParticleConfig.ParticleSpeed.Max)
+    local size = math.random(ParticleConfig.ParticleSize.Min, ParticleConfig.ParticleSize.Max)
+    local speed = math.random(ParticleConfig.ParticleSpeed.Min, ParticleConfig.ParticleSpeed.Max)
 
-	local particleColor = Theme["Color Theme"]
+    local particleColor = Color3.fromRGB(255, 0, 0) -- أحمر نيون
 
-	local Particle = Create("ImageLabel", ParticleContainer, {
-		Size = UDim2.fromOffset(size + 6, size + 6),
-		Position = UDim2.fromOffset(startX, startY),
-		Image = "rbxassetid://97255732156702",
-		BackgroundTransparency = 1,
-		ImageTransparency = 0.15,
-		ImageColor3 = particleColor,
-		ZIndex = 2
-	})
+    local Particle = Create("ImageLabel", ParticleContainer, {
+        Size = UDim2.fromOffset(size + 6, size + 6),
+        Position = UDim2.fromOffset(startX, startY),
+        Image = "rbxassetid://97255732156702",
+        BackgroundTransparency = 1,
+        ImageTransparency = 0.15,
+        ImageColor3 = particleColor,
+        ZIndex = 2
+    })
 
-	local Glow = Create("Frame", Particle, {
-		Size = UDim2.new(1, 10, 1, 10),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundColor3 = particleColor,
-		BackgroundTransparency = 0.7,
-		ZIndex = 1
-	})
+    local Glow = Create("Frame", Particle, {
+        Size = UDim2.new(1, 10, 1, 10),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundColor3 = particleColor,
+        BackgroundTransparency = 0.7,
+        ZIndex = 1
+    })
 
-	Create("UICorner", Glow, {CornerRadius = UDim.new(0.5, 0)})
-	Create("UICorner", Particle, {CornerRadius = UDim.new(0.5, 0)})
+    Create("UICorner", Glow, {CornerRadius = UDim.new(0.5, 0)})
+    Create("UICorner", Particle, {CornerRadius = UDim.new(0.5, 0)})
 
-	table.insert(ActiveParticles, Particle)
+    table.insert(ActiveParticles, Particle)
 
-	task.spawn(function()
-		local life = 0
-		while life < ParticleConfig.ParticleLifetime do
-			local dt = RunService.Heartbeat:Wait()
-			life = life + dt
+    task.spawn(function()
+        local life = 0
+        while life < ParticleConfig.ParticleLifetime do
+            local dt = RunService.Heartbeat:Wait()
+            life = life + dt
 
-			local pos = Particle.Position
-			Particle.Position = pos + UDim2.new(0, 0, 0, -speed * dt)
-			Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
-			Particle.ImageTransparency = 0.15 + life / ParticleConfig.ParticleLifetime
-			Glow.BackgroundTransparency = 0.7 + life / ParticleConfig.ParticleLifetime
-		end
+            local pos = Particle.Position
+            Particle.Position = pos + UDim2.new(0, 0, 0, -speed * dt)
+            Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
+            Particle.ImageTransparency = 0.15 + life / ParticleConfig.ParticleLifetime
+            Glow.BackgroundTransparency = 0.7 + life / ParticleConfig.ParticleLifetime
+        end
 
-		Particle:Destroy()
-		for i, v in pairs(ActiveParticles) do
-			if v == Particle then
-				table.remove(ActiveParticles, i)
-				break
-			end
-		end
-	end)
+        Particle:Destroy()
+        for i, v in pairs(ActiveParticles) do
+            if v == Particle then
+                table.remove(ActiveParticles, i)
+                break
+            end
+        end
+    end)
 end
 
 task.spawn(function()
-	while true do
-		local dt = RunService.Heartbeat:Wait()
-		LastSpawn = LastSpawn + dt
-		if LastSpawn >= ParticleConfig.SpawnRate then
-			CreateCyberpunkParticle()
-			LastSpawn = 0
-		end
-	end
+    while true do
+        local dt = RunService.Heartbeat:Wait()
+        LastSpawn = LastSpawn + dt
+        if LastSpawn >= ParticleConfig.SpawnRate then
+            CreateCyberpunkParticle()
+            LastSpawn = 0
+        end
+    end
 end)
 
-	local ParticleConnection = RunService.Heartbeat:Connect(function()
-		UpdateCyberpunkParticles()
-		SpawnCyberpunkSystem()
-	end)
-	
-	local ControlSize1, ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
-		Size = UDim2.new(0, 35, 0, 35),
-		Position = MainFrame.Size,
-		Active = true,
-		AnchorPoint = Vector2.new(0.8, 0.8),
-		BackgroundTransparency = 1,
-		Name = "Control Hub Size"
-	})), MakeDrag(Create("ImageButton", MainFrame, {
-		Size = UDim2.new(0, 20, 1, -30),
-		Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
-		AnchorPoint = Vector2.new(0.5, 1),
-		Active = true,
-		BackgroundTransparency = 1,
-		Name = "Control Tab Size"
-	}))
+local ParticleConnection = RunService.Heartbeat:Connect(function()
+    UpdateCyberpunkParticles()
+    SpawnCyberpunkSystem()
+end)
+
+local ControlSize1, ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
+    Size = UDim2.new(0, 35, 0, 35),
+    Position = MainFrame.Size,
+    Active = true,
+    AnchorPoint = Vector2.new(0.8, 0.8),
+    BackgroundTransparency = 1,
+    Name = "Control Hub Size"
+})), MakeDrag(Create("ImageButton", MainFrame, {
+    Size = UDim2.new(0, 20, 1, -30),
+    Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
+    AnchorPoint = Vector2.new(0.5, 1),
+    Active = true,
+    BackgroundTransparency = 1,
+    Name = "Control Tab Size"
+}))
 	
 	local function ControlSize()
 		local Pos1, Pos2 = ControlSize1.Position, ControlSize2.Position
