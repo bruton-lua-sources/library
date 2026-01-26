@@ -1625,7 +1625,7 @@ local function CreateCyberpunkParticle()
     local Particle = Create("ImageLabel", ParticleContainer, {
         Size = UDim2.fromOffset(size + 6, size + 6),
         Position = UDim2.fromOffset(startX, startY),
-        Image = "rbxassetid://97255732156702",
+        Image = "rbxassetid://114599285977543",    -- 12345678
         BackgroundTransparency = 1,
         ImageTransparency = 0.15,
         ImageColor3 = particleColor,
