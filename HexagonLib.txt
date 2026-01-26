@@ -1755,10 +1755,10 @@ end)
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
-			Title = "إغلاق",  
-			Text = "ليش\nليش\nليش\nليش\nمتاكد تريد تغلق سكربت بروتون", 
+			Title = "HEXAGON HUB",  
+			Text = "Are you sure the script is closed?", 
 			Options = {
-				{"نعم", function()  
+				{"نعم", function()
 					ScreenGui:Destroy()
 				end},
 				{"لا"} 
@@ -2047,6 +2047,19 @@ function Window:MakeTab(paste, Configs)
 		BackgroundTransparency = 1,
 		ImageTransparency = (FirstTab and 0.3) or 0
 	}), "Text")
+	local OriginalIcon = LabelIcon.Image
+
+task.spawn(function()
+	while LabelIcon and LabelIcon.Parent do
+		task.wait(3)
+		if not (LabelIcon and LabelIcon.Parent) then break end
+		LabelIcon.Image = "rbxassetid://91458338127515"
+		task.wait(4)
+		if LabelIcon and LabelIcon.Parent then
+			LabelIcon.Image = OriginalIcon
+		end
+	end
+end)
 	local Selected = InsertTheme(Create("Frame", TabSelect, {
 		Size = FirstTab and UDim2.new(0, 4, 0, 4) or UDim2.new(0, 4, 0, 13),
 		Position = UDim2.new(0, 1, 0.5),
