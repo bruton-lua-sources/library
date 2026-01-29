@@ -2166,6 +2166,106 @@ end
 	function DiscordInvite:Visible(...) Funcs:ToggleVisible(InviteHolder, ...) end
 	return DiscordInvite
 end
+function Tab:AddInfoBruton()
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local MarketplaceService = game:GetService("MarketplaceService")
+
+	local LocalPlayer = Players.LocalPlayer
+	local startClock = os.clock()
+	local currentFPS = 0
+
+	RunService.RenderStepped:Connect(function(dt)
+		currentFPS = math.floor(1 / dt)
+	end)
+
+	local function getGameName()
+		local ok, info = pcall(function()
+			return MarketplaceService:GetProductInfo(game.PlaceId)
+		end)
+		return (ok and info and info.Name) or "بروكهافن"
+	end
+
+	local function getDate()
+		return os.date("%d/%m/%Y")
+	end
+
+	local Frame = Instance.new("Frame")
+	Frame.Parent = Container
+	Frame.Size = UDim2.new(1, -20, 0, 150)
+	Frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
+	Frame.BorderSizePixel = 0
+
+	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,18)
+
+	local Stroke = Instance.new("UIStroke")
+	Stroke.Parent = Frame
+	Stroke.Color = Color3.fromRGB(70,70,70)
+	Stroke.Thickness = 1.5
+
+	local Avatar = Instance.new("ImageLabel")
+	Avatar.Parent = Frame
+	Avatar.Size = UDim2.new(0,72,0,72)
+	Avatar.Position = UDim2.new(0,16,0.5,0)
+	Avatar.AnchorPoint = Vector2.new(0,0.5)
+	Avatar.BackgroundTransparency = 1
+	Instance.new("UICorner", Avatar).CornerRadius = UDim.new(1,0)
+
+	local thumb = Players:GetUserThumbnailAsync(
+		LocalPlayer.UserId,
+		Enum.ThumbnailType.HeadShot,
+		Enum.ThumbnailSize.Size180x180
+	)
+	Avatar.Image = thumb
+
+	local Text = Instance.new("TextLabel")
+	Text.Parent = Frame
+	Text.Position = UDim2.new(0,105,0,15)
+	Text.Size = UDim2.new(1,-120,1,-30)
+	Text.BackgroundTransparency = 1
+	Text.TextWrapped = true
+	Text.TextXAlignment = Left
+	Text.TextYAlignment = Top
+	Text.Font = Enum.Font.Gotham
+	Text.TextSize = 14
+	Text.TextColor3 = Color3.fromRGB(220,220,220)
+
+	local Alive = true
+	task.spawn(function()
+		while Alive do
+			local e = os.clock() - startClock
+			local h = math.floor(e/3600)
+			local m = math.floor((e%3600)/60)
+			local s = math.floor(e%60)
+
+			Text.Text =
+				"👋 نورت السكربت\n" ..
+				"📅 اليوم: " .. getDate() .. "\n\n" ..
+				"👤 اسمك: " .. LocalPlayer.Name .. "\n" ..
+				"🆔 ايديك: " .. LocalPlayer.UserId .. "\n\n" ..
+				"🎮 الماب: " .. getGameName() .. "\n" ..
+				"⏱️ وقت الاستخدام: " .. string.format("%02d:%02d:%02d", h, m, s) .. "\n" ..
+				"🖥️ FPS: " .. currentFPS .. "\n" ..
+				"👥 اللاعبين: " .. #Players:GetPlayers() .. "\n\n" ..
+				"⚙️ الهاك: " .. tostring(identifyexecutor())
+
+			task.wait(0.5)
+		end
+	end)
+
+	local InfoBruton = {}
+
+	function InfoBruton:Visible(...)
+		Funcs:ToggleVisible(Frame, ...)
+	end
+
+	function InfoBruton:Destroy()
+		Alive = false
+		Frame:Destroy()
+	end
+
+	return InfoBruton
+end
     return Tab
   end
   
