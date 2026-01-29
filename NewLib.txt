@@ -2169,94 +2169,107 @@ end
 function Tab:AddInfoBruton()
 	local Players = game:GetService("Players")
 	local RunService = game:GetService("RunService")
-	local MarketplaceService = game:GetService("MarketplaceService")
 
 	local LocalPlayer = Players.LocalPlayer
-	local startClock = os.clock()
-	local currentFPS = 0
 
-	RunService.RenderStepped:Connect(function(dt)
-		currentFPS = math.floor(1/dt + 0.5)
+	local Frame = Instance.new("Frame")
+	Frame.Parent = Container
+	Frame.Size = UDim2.new(1, -20, 0, 140)
+	Frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
+	Frame.BorderSizePixel = 0
+
+	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,18)
+
+	local Stroke = Instance.new("UIStroke")
+	Stroke.Parent = Frame
+	Stroke.Thickness = 1.6
+	Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	Stroke.Color = Color3.new(1,1,1)
+
+	local Gradient = Instance.new("UIGradient")
+	Gradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(180,0,255)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120,0,255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
+	}
+	Gradient.Parent = Stroke
+
+	RunService.Heartbeat:Connect(function(dt)
+		Gradient.Rotation = (Gradient.Rotation + 80 * dt) % 360
 	end)
 
-	local function getDate()
-		return os.date("%d/%m/%Y")
-	end
+	local AvatarFrame = Instance.new("Frame")
+	AvatarFrame.Parent = Frame
+	AvatarFrame.Size = UDim2.new(0,78,0,78)
+	AvatarFrame.Position = UDim2.new(0,16,0.5,0)
+	AvatarFrame.AnchorPoint = Vector2.new(0,0.5)
+	AvatarFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+	AvatarFrame.BorderSizePixel = 0
+	Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1,0)
 
-	local function getGameName()
-		local ok, info = pcall(function()
-			return MarketplaceService:GetProductInfo(game.PlaceId)
-		end)
-		return (ok and info and info.Name) or "بروكهافن"
-	end
+	local AvatarStroke = Instance.new("UIStroke")
+	AvatarStroke.Parent = AvatarFrame
+	AvatarStroke.Thickness = 1.2
+	AvatarStroke.Color = Color3.fromRGB(150,0,255)
 
-	local blocks = {}
+	local Avatar = Instance.new("ImageLabel")
+	Avatar.Parent = AvatarFrame
+	Avatar.Size = UDim2.new(1,-6,1,-6)
+	Avatar.Position = UDim2.new(0.5,0,0.5,0)
+	Avatar.AnchorPoint = Vector2.new(0.5,0.5)
+	Avatar.BackgroundTransparency = 1
+	Instance.new("UICorner", Avatar).CornerRadius = UDim.new(1,0)
 
-	local function newBlock(title, value)
-		local b = Tab:AddParagraph({ title, value })
-		table.insert(blocks, b)
-		return b
-	end
+	local thumb = Players:GetUserThumbnailAsync(
+		LocalPlayer.UserId,
+		Enum.ThumbnailType.HeadShot,
+		Enum.ThumbnailSize.Size180x180
+	)
+	Avatar.Image = thumb
 
-	local welcomeBlock = newBlock("نورت سكربت اليوم هو:", getDate())
-	local nameBlock    = newBlock("اسمك:", LocalPlayer.Name)
-	local idBlock      = newBlock("ايديك:", tostring(LocalPlayer.UserId))
-	local gameBlock    = newBlock("الماب:", "...")
-	local timeBlock    = newBlock("وقت الاستخدام:", "00:00:00")
-	local fpsBlock     = newBlock("فريماتك:", "0")
-	local playersBlock = newBlock("عدد الاشخاص في السيرفر:", tostring(#Players:GetPlayers()))
-	local execBlock    = newBlock("الهاك:", tostring(identifyexecutor()))
+	local TextFrame = Instance.new("Frame")
+	TextFrame.Parent = Frame
+	TextFrame.Position = UDim2.new(0,110,0,12)
+	TextFrame.Size = UDim2.new(1,-125,1,-24)
+	TextFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
+	TextFrame.BorderSizePixel = 0
+	Instance.new("UICorner", TextFrame).CornerRadius = UDim.new(0,12)
 
-	local Alive = true
+	local TextStroke = Instance.new("UIStroke")
+	TextStroke.Parent = TextFrame
+	TextStroke.Thickness = 1
+	TextStroke.Color = Color3.fromRGB(90,0,150)
 
-	task.spawn(function()
-		while Alive do
-			task.wait(0.5)
+	local Text = Instance.new("TextLabel")
+	Text.Parent = TextFrame
+	Text.Size = UDim2.new(1,-12,1,-12)
+	Text.Position = UDim2.new(0.5,0,0.5,0)
+	Text.AnchorPoint = Vector2.new(0.5,0.5)
+	Text.BackgroundTransparency = 1
+	Text.TextWrapped = true
+	Text.TextXAlignment = Enum.TextXAlignment.Left
+	Text.TextYAlignment = Enum.TextYAlignment.Top
+	Text.Font = Enum.Font.GothamBold
+	Text.TextSize = 16
+	Text.TextColor3 = Color3.fromRGB(220,220,220)
 
-			welcomeBlock:Set(getDate())
-
-			local e = os.clock() - startClock
-			local h = math.floor(e/3600)
-			local m = math.floor((e%3600)/60)
-			local s = math.floor(e%60)
-
-			timeBlock:Set(string.format("%02d:%02d:%02d", h, m, s))
-			fpsBlock:Set(tostring(currentFPS))
-			playersBlock:Set(tostring(#Players:GetPlayers()))
-			gameBlock:Set(getGameName())
-		end
-	end)
-
-	Players.PlayerAdded:Connect(function()
-		playersBlock:Set(tostring(#Players:GetPlayers()))
-	end)
-
-	Players.PlayerRemoving:Connect(function()
-		playersBlock:Set(tostring(#Players:GetPlayers()))
-	end)
+	Text.Text =
+		"𝑾𝒆𝒍𝒄𝒐𝒎𝒆\n\n" ..
+		LocalPlayer.DisplayName
 
 	local InfoBruton = {}
 
-	function InfoBruton:Visible(v)
-		for _,b in pairs(blocks) do
-			if b.Visible then
-				b:Visible(v)
-			end
-		end
+	function InfoBruton:Visible(...)
+		Funcs:ToggleVisible(Frame, ...)
 	end
 
 	function InfoBruton:Destroy()
-		Alive = false
-		for _,b in pairs(blocks) do
-			if b.Destroy then
-				b:Destroy()
-			end
-		end
+		Frame:Destroy()
 	end
 
 	return InfoBruton
 end
-end
+
     return Tab
   end
   
