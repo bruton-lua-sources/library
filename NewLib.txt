@@ -2174,7 +2174,7 @@ function Tab:AddInfoBruton()
 
 	local Frame = Instance.new("Frame")
 	Frame.Parent = Container
-	Frame.Size = UDim2.new(1, -20, 0, 140)
+	Frame.Size = UDim2.new(1, -20, 0, 160)
 	Frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
 	Frame.BorderSizePixel = 0
 
@@ -2247,15 +2247,22 @@ function Tab:AddInfoBruton()
 	Text.AnchorPoint = Vector2.new(0.5,0.5)
 	Text.BackgroundTransparency = 1
 	Text.TextWrapped = true
-	Text.TextXAlignment = Enum.TextXAlignment.Left
-	Text.TextYAlignment = Enum.TextYAlignment.Top
+	Text.TextXAlignment = Enum.TextXAlignment.Center
+	Text.TextYAlignment = Enum.TextYAlignment.Center
 	Text.Font = Enum.Font.GothamBold
-	Text.TextSize = 16
-	Text.TextColor3 = Color3.fromRGB(220,220,220)
+	Text.TextSize = 18
+	Text.TextColor3 = Color3.fromRGB(230,230,230)
+
+	local function getDate()
+		return os.date("%d/%m/%Y")
+	end
 
 	Text.Text =
-		"𝑾𝒆𝒍𝒄𝒐𝒎𝒆\n\n" ..
-		LocalPlayer.DisplayName
+		"Welcome\n\n" ..
+		LocalPlayer.DisplayName .. "\n\n" ..
+		"@" .. LocalPlayer.Name .. "\n" ..
+		"ID: " .. LocalPlayer.UserId .. "\n" ..
+		getDate()
 
 	local InfoBruton = {}
 
@@ -2269,7 +2276,6 @@ function Tab:AddInfoBruton()
 
 	return InfoBruton
 end
-
     return Tab
   end
   
