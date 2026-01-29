@@ -2176,8 +2176,12 @@ function Tab:AddInfoBruton()
 	local currentFPS = 0
 
 	RunService.RenderStepped:Connect(function(dt)
-		currentFPS = math.floor(1 / dt)
+		currentFPS = math.floor(1/dt + 0.5)
 	end)
+
+	local function getDate()
+		return os.date("%d/%m/%Y")
+	end
 
 	local function getGameName()
 		local ok, info = pcall(function()
@@ -2186,126 +2190,72 @@ function Tab:AddInfoBruton()
 		return (ok and info and info.Name) or "بروكهافن"
 	end
 
-	local function getDate()
-		return os.date("%d/%m/%Y")
+	local blocks = {}
+
+	local function newBlock(title, value)
+		local b = Tab:AddParagraph({ title, value })
+		table.insert(blocks, b)
+		return b
 	end
 
-	local Frame = Instance.new("Frame")
-	Frame.Parent = Container
-	Frame.Size = UDim2.new(1, -20, 0, 170)
-	Frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
-	Frame.BorderSizePixel = 0
-
-	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,18)
-
-	local Stroke = Instance.new("UIStroke")
-	Stroke.Parent = Frame
-	Stroke.Thickness = 1.6
-	Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-	Stroke.Color = Color3.new(1,1,1)
-
-	local Gradient = Instance.new("UIGradient")
-	Gradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(180,0,255)),
-		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120,0,255)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
-	}
-	Gradient.Parent = Stroke
-
-	RunService.Heartbeat:Connect(function(dt)
-		Gradient.Rotation = (Gradient.Rotation + 80 * dt) % 360
-	end)
-
-	local AvatarFrame = Instance.new("Frame")
-	AvatarFrame.Parent = Frame
-	AvatarFrame.Size = UDim2.new(0,78,0,78)
-	AvatarFrame.Position = UDim2.new(0,16,0.5,0)
-	AvatarFrame.AnchorPoint = Vector2.new(0,0.5)
-	AvatarFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
-	AvatarFrame.BorderSizePixel = 0
-	Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1,0)
-
-	local AvatarStroke = Instance.new("UIStroke")
-	AvatarStroke.Parent = AvatarFrame
-	AvatarStroke.Thickness = 1.2
-	AvatarStroke.Color = Color3.fromRGB(150,0,255)
-
-	local Avatar = Instance.new("ImageLabel")
-	Avatar.Parent = AvatarFrame
-	Avatar.Size = UDim2.new(1,-6,1,-6)
-	Avatar.Position = UDim2.new(0.5,0,0.5,0)
-	Avatar.AnchorPoint = Vector2.new(0.5,0.5)
-	Avatar.BackgroundTransparency = 1
-	Instance.new("UICorner", Avatar).CornerRadius = UDim.new(1,0)
-
-	local thumb = Players:GetUserThumbnailAsync(
-		LocalPlayer.UserId,
-		Enum.ThumbnailType.HeadShot,
-		Enum.ThumbnailSize.Size180x180
-	)
-	Avatar.Image = thumb
-
-	local TextFrame = Instance.new("Frame")
-	TextFrame.Parent = Frame
-	TextFrame.Position = UDim2.new(0,110,0,12)
-	TextFrame.Size = UDim2.new(1,-125,1,-24)
-	TextFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
-	TextFrame.BorderSizePixel = 0
-	Instance.new("UICorner", TextFrame).CornerRadius = UDim.new(0,12)
-
-	local TextStroke = Instance.new("UIStroke")
-	TextStroke.Parent = TextFrame
-	TextStroke.Thickness = 1
-	TextStroke.Color = Color3.fromRGB(90,0,150)
-
-	local Text = Instance.new("TextLabel")
-	Text.Parent = TextFrame
-	Text.Size = UDim2.new(1,-12,1,-12)
-	Text.Position = UDim2.new(0.5,0,0.5,0)
-	Text.AnchorPoint = Vector2.new(0.5,0.5)
-	Text.BackgroundTransparency = 1
-	Text.TextWrapped = true
-	Text.TextXAlignment = Left
-	Text.TextYAlignment = Top
-	Text.Font = Enum.Font.Gotham
-	Text.TextSize = 14
-	Text.TextColor3 = Color3.fromRGB(220,220,220)
+	local welcomeBlock = newBlock("نورت سكربت اليوم هو:", getDate())
+	local nameBlock    = newBlock("اسمك:", LocalPlayer.Name)
+	local idBlock      = newBlock("ايديك:", tostring(LocalPlayer.UserId))
+	local gameBlock    = newBlock("الماب:", "...")
+	local timeBlock    = newBlock("وقت الاستخدام:", "00:00:00")
+	local fpsBlock     = newBlock("فريماتك:", "0")
+	local playersBlock = newBlock("عدد الاشخاص في السيرفر:", tostring(#Players:GetPlayers()))
+	local execBlock    = newBlock("الهاك:", tostring(identifyexecutor()))
 
 	local Alive = true
+
 	task.spawn(function()
 		while Alive do
+			task.wait(0.5)
+
+			welcomeBlock:Set(getDate())
+
 			local e = os.clock() - startClock
 			local h = math.floor(e/3600)
 			local m = math.floor((e%3600)/60)
 			local s = math.floor(e%60)
 
-			Text.Text =
-				"نورت السكربت\n" ..
-				"اليوم: " .. getDate() .. "\n\n" ..
-				"اسمك: " .. LocalPlayer.Name .. "\n" ..
-				"ايديك: " .. LocalPlayer.UserId .. "\n\n" ..
-				"الماب: " .. getGameName() .. "\n" ..
-				"وقت الاستخدام: " .. string.format("%02d:%02d:%02d", h, m, s) .. "\n" ..
-				"FPS: " .. currentFPS .. "\n" ..
-				"عدد اللاعبين: " .. #Players:GetPlayers() .. "\n\n" ..
-				"الهاك: " .. tostring(identifyexecutor())
-
-			task.wait(0.5)
+			timeBlock:Set(string.format("%02d:%02d:%02d", h, m, s))
+			fpsBlock:Set(tostring(currentFPS))
+			playersBlock:Set(tostring(#Players:GetPlayers()))
+			gameBlock:Set(getGameName())
 		end
+	end)
+
+	Players.PlayerAdded:Connect(function()
+		playersBlock:Set(tostring(#Players:GetPlayers()))
+	end)
+
+	Players.PlayerRemoving:Connect(function()
+		playersBlock:Set(tostring(#Players:GetPlayers()))
 	end)
 
 	local InfoBruton = {}
 
-	function InfoBruton:Visible(...)
-		Funcs:ToggleVisible(Frame, ...)
+	function InfoBruton:Visible(v)
+		for _,b in pairs(blocks) do
+			if b.Visible then
+				b:Visible(v)
+			end
+		end
 	end
 
 	function InfoBruton:Destroy()
 		Alive = false
-		Frame:Destroy()
+		for _,b in pairs(blocks) do
+			if b.Destroy then
+				b:Destroy()
+			end
+		end
 	end
 
 	return InfoBruton
+end
 end
     return Tab
   end
