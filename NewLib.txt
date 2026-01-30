@@ -2267,12 +2267,24 @@ function Tab:AddInfoBruton()
 		return os.date("%d/%m/%Y")
 	end
 
-	Text.Text =
-		"Welcome\n" ..
-		LocalPlayer.DisplayName .. "\n" ..
-		"@" .. LocalPlayer.Name .. "\n" ..
-		"ID: " .. LocalPlayer.UserId .. "\n" ..
-		getDate()
+	local startTime = os.time()
+
+	RunService.Heartbeat:Connect(function()
+		local elapsed = os.time() - startTime
+		local h = math.floor(elapsed / 3600)
+		local m = math.floor((elapsed % 3600) / 60)
+		local s = elapsed % 60
+
+		local timer = string.format("%02d:%02d:%02d", h, m, s)
+
+		Text.Text =
+			"Welcome\n" ..
+			LocalPlayer.DisplayName .. "\n" ..
+			"@" .. LocalPlayer.Name .. "\n" ..
+			"ID: " .. LocalPlayer.UserId .. "\n" ..
+			getDate() .. "\n" ..
+			timer
+	end)
 
 	local InfoBruton = {}
 
