@@ -2075,7 +2075,6 @@ end
 		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120,0,255)),
 		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
 	}
-	Gradient.Rotation = 0
 	Gradient.Parent = Stroke
 
 	local Glow = Instance.new("ImageLabel")
@@ -2128,37 +2127,62 @@ end
 		Text = "Join",
 		Font = Enum.Font.GothamBold,
 		TextSize = 12,
-		TextColor3 = Color3.fromRGB(220, 220, 220),
-		BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+		TextColor3 = Color3.fromRGB(255,255,255),
+		BackgroundColor3 = Color3.fromRGB(160,0,255)
 	})
 	Make("Corner", JoinButton, UDim.new(0, 5))
+
+	local JoinStroke = Instance.new("UIStroke")
+	JoinStroke.Parent = JoinButton
+	JoinStroke.Thickness = 1.2
+	JoinStroke.Color = Color3.fromRGB(220,120,255)
+	JoinStroke.Transparency = 0.2
+
+	local JoinGradient = Instance.new("UIGradient")
+	JoinGradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255,120,220)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180,0,255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(120,0,200))
+	}
+	JoinGradient.Parent = JoinButton
+
+	local Pulse = Instance.new("ImageLabel")
+	Pulse.Parent = JoinButton
+	Pulse.Size = UDim2.new(1.8,0,2.2,0)
+	Pulse.Position = UDim2.new(-0.4,0,-0.6,0)
+	Pulse.BackgroundTransparency = 1
+	Pulse.Image = "rbxassetid://5028857084"
+	Pulse.ImageColor3 = Color3.fromRGB(220,120,255)
+	Pulse.ImageTransparency = 0.6
+	Pulse.ZIndex = JoinButton.ZIndex - 1
 
 	local ClickDelay
 	JoinButton.Activated:Connect(function()
 		setclipboard(Invite)
 		if ClickDelay then return end
 		ClickDelay = true
-		CreateTween({Glow,"ImageTransparency",0.2,0.25})
-		task.delay(0.25,function()
-			CreateTween({Glow,"ImageTransparency",1,0.4})
-		end)
+
 		SetProps(JoinButton,{
 			Text="Copied to Clipboard",
-			BackgroundColor3=Color3.fromRGB(100,100,100),
-			TextColor3=Color3.fromRGB(150,150,150)
+			BackgroundColor3=Color3.fromRGB(90,90,90),
+			TextColor3=Color3.fromRGB(255,255,255)
 		})
+
 		task.wait(5)
+
 		SetProps(JoinButton,{
 			Text="Join",
-			BackgroundColor3=Color3.fromRGB(50,150,50),
-			TextColor3=Color3.fromRGB(220,220,220)
+			BackgroundColor3=Color3.fromRGB(160,0,255),
+			TextColor3=Color3.fromRGB(255,255,255)
 		})
-		ClickDelay=false
+
+		ClickDelay = false
 	end)
 
-	local RunService = game:GetService("RunService")
 	RunService.Heartbeat:Connect(function(dt)
 		Gradient.Rotation = (Gradient.Rotation + 80 * dt) % 360
+		JoinGradient.Rotation = (JoinGradient.Rotation + 120 * dt) % 360
+		Pulse.ImageTransparency = 0.35 + math.sin(tick()*2)*0.25
 	end)
 
 	local DiscordInvite = {}
