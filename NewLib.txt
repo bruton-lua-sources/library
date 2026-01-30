@@ -2177,7 +2177,6 @@ function Tab:AddInfoBruton()
 	Frame.Size = UDim2.new(1, -20, 0, 160)
 	Frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
 	Frame.BorderSizePixel = 0
-
 	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,18)
 
 	local Stroke = Instance.new("UIStroke")
@@ -2240,9 +2239,19 @@ function Tab:AddInfoBruton()
 	TextStroke.Thickness = 1
 	TextStroke.Color = Color3.fromRGB(90,0,150)
 
+	local InfoImage = Instance.new("ImageLabel")
+	InfoImage.Parent = TextFrame
+	InfoImage.Size = UDim2.new(1,0,1,0)
+	InfoImage.Position = UDim2.new(0,0,0,0)
+	InfoImage.BackgroundTransparency = 1
+	InfoImage.ImageTransparency = 0.92
+	InfoImage.Image = "rbxassetid://92969395163617"
+	InfoImage.ScaleType = Enum.ScaleType.Crop
+	Instance.new("UICorner", InfoImage).CornerRadius = UDim.new(0,12)
+
 	local Text = Instance.new("TextLabel")
 	Text.Parent = TextFrame
-	Text.Size = UDim2.new(1,-12,1,-12)
+	Text.Size = UDim2.new(1,-14,1,-14)
 	Text.Position = UDim2.new(0.5,0,0.5,0)
 	Text.AnchorPoint = Vector2.new(0.5,0.5)
 	Text.BackgroundTransparency = 1
@@ -2250,8 +2259,9 @@ function Tab:AddInfoBruton()
 	Text.TextXAlignment = Enum.TextXAlignment.Center
 	Text.TextYAlignment = Enum.TextYAlignment.Center
 	Text.Font = Enum.Font.GothamBold
-	Text.TextSize = 18
-	Text.TextColor3 = Color3.fromRGB(230,230,230)
+	Text.TextSize = 15
+	Text.TextColor3 = Color3.fromRGB(235,235,235)
+	Text.ZIndex = 2
 
 	local function getDate()
 		return os.date("%d/%m/%Y")
