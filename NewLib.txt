@@ -2206,11 +2206,6 @@ function Tab:AddInfoBruton()
 	AvatarFrame.BorderSizePixel = 0
 	Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1,0)
 
-	local AvatarStroke = Instance.new("UIStroke")
-	AvatarStroke.Parent = AvatarFrame
-	AvatarStroke.Thickness = 1.2
-	AvatarStroke.Color = Color3.fromRGB(150,0,255)
-
 	local Avatar = Instance.new("ImageLabel")
 	Avatar.Parent = AvatarFrame
 	Avatar.Size = UDim2.new(1,-6,1,-6)
@@ -2219,12 +2214,11 @@ function Tab:AddInfoBruton()
 	Avatar.BackgroundTransparency = 1
 	Instance.new("UICorner", Avatar).CornerRadius = UDim.new(1,0)
 
-	local thumb = Players:GetUserThumbnailAsync(
+	Avatar.Image = Players:GetUserThumbnailAsync(
 		LocalPlayer.UserId,
 		Enum.ThumbnailType.HeadShot,
 		Enum.ThumbnailSize.Size180x180
 	)
-	Avatar.Image = thumb
 
 	local TextFrame = Instance.new("Frame")
 	TextFrame.Parent = Frame
@@ -2233,11 +2227,6 @@ function Tab:AddInfoBruton()
 	TextFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
 	TextFrame.BorderSizePixel = 0
 	Instance.new("UICorner", TextFrame).CornerRadius = UDim.new(0,12)
-
-	local TextStroke = Instance.new("UIStroke")
-	TextStroke.Parent = TextFrame
-	TextStroke.Thickness = 1
-	TextStroke.Color = Color3.fromRGB(90,0,150)
 
 	local InfoImage = Instance.new("ImageLabel")
 	InfoImage.Parent = TextFrame
@@ -2267,6 +2256,10 @@ function Tab:AddInfoBruton()
 		return os.date("%d/%m/%Y")
 	end
 
+	local function getClock()
+		return os.date("%H:%M:%S")
+	end
+
 	local startTime = os.time()
 
 	RunService.Heartbeat:Connect(function()
@@ -2275,7 +2268,7 @@ function Tab:AddInfoBruton()
 		local m = math.floor((elapsed % 3600) / 60)
 		local s = elapsed % 60
 
-		local timer = string.format("%02d:%02d:%02d", h, m, s)
+		local usage = string.format("%02d:%02d:%02d", h, m, s)
 
 		Text.Text =
 			"Welcome\n" ..
@@ -2283,7 +2276,8 @@ function Tab:AddInfoBruton()
 			"@" .. LocalPlayer.Name .. "\n" ..
 			"ID: " .. LocalPlayer.UserId .. "\n" ..
 			getDate() .. "\n" ..
-			timer
+			usage .. "\n" ..
+			getClock()
 	end)
 
 	local InfoBruton = {}
