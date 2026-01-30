@@ -2206,6 +2206,11 @@ function Tab:AddInfoBruton()
 	AvatarFrame.BorderSizePixel = 0
 	Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1,0)
 
+	local AvatarStroke = Instance.new("UIStroke")
+	AvatarStroke.Parent = AvatarFrame
+	AvatarStroke.Thickness = 1.2
+	AvatarStroke.Color = Color3.fromRGB(150,0,255)
+
 	local Avatar = Instance.new("ImageLabel")
 	Avatar.Parent = AvatarFrame
 	Avatar.Size = UDim2.new(1,-6,1,-6)
@@ -2227,6 +2232,11 @@ function Tab:AddInfoBruton()
 	TextFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
 	TextFrame.BorderSizePixel = 0
 	Instance.new("UICorner", TextFrame).CornerRadius = UDim.new(0,12)
+
+	local TextStroke = Instance.new("UIStroke")
+	TextStroke.Parent = TextFrame
+	TextStroke.Thickness = 1
+	TextStroke.Color = Color3.fromRGB(120,0,200)
 
 	local InfoImage = Instance.new("ImageLabel")
 	InfoImage.Parent = TextFrame
@@ -2263,12 +2273,10 @@ function Tab:AddInfoBruton()
 	local startTime = os.time()
 
 	RunService.Heartbeat:Connect(function()
-		local elapsed = os.time() - startTime
-		local h = math.floor(elapsed / 3600)
-		local m = math.floor((elapsed % 3600) / 60)
-		local s = elapsed % 60
-
-		local usage = string.format("%02d:%02d:%02d", h, m, s)
+		local e = os.time() - startTime
+		local h = math.floor(e / 3600)
+		local m = math.floor((e % 3600) / 60)
+		local s = e % 60
 
 		Text.Text =
 			"Welcome\n" ..
@@ -2276,7 +2284,7 @@ function Tab:AddInfoBruton()
 			"@" .. LocalPlayer.Name .. "\n" ..
 			"ID: " .. LocalPlayer.UserId .. "\n" ..
 			getDate() .. "\n" ..
-			usage .. "\n" ..
+			string.format("%02d:%02d:%02d", h, m, s) .. "\n" ..
 			getClock()
 	end)
 
