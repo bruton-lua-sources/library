@@ -1,13 +1,4 @@
 
-
---[[
-
-	Created by Redz
-	Modified for Laelmano24&bruton
-	Thanks Laelmano24 It made things much easier 
-  
-]]
-
 local MarketplaceService = game:GetService("MarketplaceService")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -50,15 +41,15 @@ local redzlib = {
     },
     Purple = {
       ["Color Hub 1"] = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(27.5, 25, 30)),
-        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(32.5, 32.5, 32.5)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(27.5, 25, 30))
-      }),
-      ["Color Hub 2"] = Color3.fromRGB(30, 30, 30),
-      ["Color Stroke"] = Color3.fromRGB(40, 40, 40),
-      ["Color Theme"] = Color3.fromRGB(150, 0, 255),
-      ["Color Text"] = Color3.fromRGB(240, 240, 240),
-      ["Color Dark Text"] = Color3.fromRGB(180, 180, 180)
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(27.5, 25, 30)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(32.5, 32.5, 32.5)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(27.5, 25, 30))
+}),
+["Color Hub 2"] = Color3.fromRGB(30, 30, 30),
+["Color Stroke"] = Color3.fromRGB(40, 40, 40),
+["Color Theme"] = Color3.fromRGB(170, 120, 60),
+["Color Text"] = Color3.fromRGB(240, 240, 240),
+["Color Dark Text"] = Color3.fromRGB(180, 180, 180)
     },
     Green = {
       ["Color Hub 1"] = ColorSequence.new({
@@ -585,7 +576,7 @@ local function GetColor(Instance)
   end
   return ""
 end
-
+-- BRUTON 78--
 -- 1111111 --
 function redzlib:GetIcon(IconName)
   if IconName:find("rbxassetid://") or IconName:len() < 1 then return IconName end
@@ -727,8 +718,8 @@ BorderStroke.Parent = BorderFrame
 
 local BorderGradient = Instance.new("UIGradient")
 BorderGradient.Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(180, 0, 255)),
-	ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120, 0, 255)),
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(170, 120, 60)),
+	ColorSequenceKeypoint.new(0.5, Color3.fromRGB(140, 95, 45)),
 	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
 }
 BorderGradient.Rotation = 0
@@ -740,7 +731,7 @@ local RotatingImage = Create("ImageLabel", WindowBackground, {
 	Position = UDim2.new(0.5, 0, 0.5, 0),
 	AnchorPoint = Vector2.new(0.5, 0.5),
 	BackgroundTransparency = 1,
-	Image = "rbxassetid://97255732156702",
+	Image = "rbxassetid://",
 	ImageTransparency = 0.2,
 	ScaleType = Enum.ScaleType.Crop,
 	Rotation = 0,
@@ -919,7 +910,7 @@ end)
   local Window, FirstTab = {}, false
   function Window:CloseBtn()
     local Dialog = Window:Dialog({
-      Title = "Close",
+      Title = "BRUTON HUB",
       Text = "Are you sure you want to close this script??",
       Options = {
         {"Confirm", function()
@@ -1129,8 +1120,8 @@ function Window:MakeTab(paste, Configs)
 
 	local TabGradient = Instance.new("UIGradient")
 	TabGradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(180,0,255)),
-		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120,0,255)),
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(170,120,60)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(140,95,45)),
 		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
 	}
 	TabGradient.Rotation = 0
@@ -1164,7 +1155,7 @@ function Window:MakeTab(paste, Configs)
 	Glow.Position = UDim2.new(-0.6,0,-0.6,0)
 	Glow.BackgroundTransparency = 1
 	Glow.Image = "rbxassetid://5028857084"
-	Glow.ImageColor3 = Color3.fromRGB(180,0,255)
+	Glow.ImageColor3 = Color3.fromRGB(170,120,60)
 	Glow.ImageTransparency = 1
 	Glow.ZIndex = LabelIcon.ZIndex - 1
 
@@ -1216,64 +1207,6 @@ function Window:MakeTab(paste, Configs)
 			CreateTween({Glow,"ImageTransparency",1,0.35})
 			CreateTween({LabelIcon,"Size",UDim2.new(0,13,0,13),0.35})
 		end)
-	end
-
-	local function Tabs()
-		if Container.Parent then return end
-		for _,Frame in pairs(ContainerList) do
-			if Frame:IsA("ScrollingFrame") and Frame ~= Container then
-				Frame.Parent = nil
-			end
-		end
-		Container.Parent = Containers
-		Container.Size = UDim2.new(1,0,1,150)
-		table.foreach(redzlib.Tabs,function(_,Tab)
-			if Tab.Cont ~= Container then
-				Tab.func:Disable()
-			end
-		end)
-		if not IconBusy then
-			IconBusy = true
-			IconEffect(OpenIcon)
-			task.delay(2,function()
-				IconEffect(OriginalIcon)
-				IconBusy = false
-			end)
-		end
-		CreateTween({Container,"Size",UDim2.new(1,0,1,0),0.3})
-		CreateTween({LabelTitle,"TextTransparency",0,0.35})
-		CreateTween({LabelIcon,"ImageTransparency",0,0.35})
-		CreateTween({Selected,"Size",UDim2.new(0,4,0,13),0.35})
-		CreateTween({Selected,"BackgroundTransparency",0,0.35})
-	end
-
-	TabSelect.Activated:Connect(Tabs)
-
-	FirstTab = true
-	local Tab = {}
-	table.insert(redzlib.Tabs,{TabInfo={Name=TName,Icon=TIcon},func=Tab,Cont=Container})
-	Tab.Cont = Container
-
-	function Tab:Disable()
-		Container.Parent = nil
-		IconEffect(SwitchIcon)
-		task.delay(2,function()
-			IconEffect(OriginalIcon)
-		end)
-		CreateTween({LabelTitle,"TextTransparency",0.3,0.35})
-		CreateTween({LabelIcon,"ImageTransparency",0.3,0.35})
-		CreateTween({Selected,"Size",UDim2.new(0,4,0,4),0.35})
-		CreateTween({Selected,"BackgroundTransparency",1,0.35})
-	end
-
-	function Tab:Enable() Tabs() end
-	function Tab:Visible(Bool)
-		Funcs:ToggleVisible(TabSelect,Bool)
-		Funcs:ToggleParent(Container,Bool,Containers)
-	end
-	function Tab:Destroy()
-		TabSelect:Destroy()
-		Container:Destroy()
 	end
 
 	local RunService = game:GetService("RunService")
@@ -2047,7 +1980,7 @@ end
 	local InviteLabel = Create("TextLabel", InviteHolder, {
 		Size = UDim2.new(1, 0, 0, 15),
 		Position = UDim2.new(0, 5),
-		TextColor3 = Color3.fromRGB(180, 0, 255),
+		TextColor3 = Color3.fromRGB(170,120,60),
 		Font = Enum.Font.GothamBold,
 		TextXAlignment = "Left",
 		BackgroundTransparency = 1,
@@ -2071,8 +2004,8 @@ end
 
 	local Gradient = Instance.new("UIGradient")
 	Gradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(180,0,255)),
-		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120,0,255)),
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(170,120,60)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(140,95,45)),
 		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
 	}
 	Gradient.Parent = Stroke
@@ -2083,7 +2016,7 @@ end
 	Glow.Position = UDim2.new(-0.075,0,-0.125,0)
 	Glow.BackgroundTransparency = 1
 	Glow.Image = "rbxassetid://5028857084"
-	Glow.ImageColor3 = Color3.fromRGB(180,0,255)
+	Glow.ImageColor3 = Color3.fromRGB(170,120,60)
 	Glow.ImageTransparency = 1
 	Glow.ZIndex = FrameHolder.ZIndex - 1
 
@@ -2128,21 +2061,21 @@ end
 		Font = Enum.Font.GothamBold,
 		TextSize = 12,
 		TextColor3 = Color3.fromRGB(255,255,255),
-		BackgroundColor3 = Color3.fromRGB(160,0,255)
+		BackgroundColor3 = Color3.fromRGB(150,105,55)
 	})
 	Make("Corner", JoinButton, UDim.new(0, 5))
 
 	local JoinStroke = Instance.new("UIStroke")
 	JoinStroke.Parent = JoinButton
 	JoinStroke.Thickness = 1.2
-	JoinStroke.Color = Color3.fromRGB(220,120,255)
+	JoinStroke.Color = Color3.fromRGB(200,150,90)
 	JoinStroke.Transparency = 0.2
 
 	local JoinGradient = Instance.new("UIGradient")
 	JoinGradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255,120,220)),
-		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180,0,255)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(120,0,200))
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(210,160,100)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(170,120,60)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(120,80,40))
 	}
 	JoinGradient.Parent = JoinButton
 
@@ -2152,7 +2085,7 @@ end
 	Pulse.Position = UDim2.new(-0.4,0,-0.6,0)
 	Pulse.BackgroundTransparency = 1
 	Pulse.Image = "rbxassetid://5028857084"
-	Pulse.ImageColor3 = Color3.fromRGB(220,120,255)
+	Pulse.ImageColor3 = Color3.fromRGB(200,150,90)
 	Pulse.ImageTransparency = 0.6
 	Pulse.ZIndex = JoinButton.ZIndex - 1
 
@@ -2172,7 +2105,7 @@ end
 
 		SetProps(JoinButton,{
 			Text="Join",
-			BackgroundColor3=Color3.fromRGB(160,0,255),
+			BackgroundColor3=Color3.fromRGB(150,105,55),
 			TextColor3=Color3.fromRGB(255,255,255)
 		})
 
@@ -2211,8 +2144,8 @@ function Tab:AddInfoBruton()
 
 	local Gradient = Instance.new("UIGradient")
 	Gradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(180,0,255)),
-		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120,0,255)),
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(170,120,60)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(140,95,45)),
 		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
 	}
 	Gradient.Parent = Stroke
@@ -2233,7 +2166,7 @@ function Tab:AddInfoBruton()
 	local AvatarStroke = Instance.new("UIStroke")
 	AvatarStroke.Parent = AvatarFrame
 	AvatarStroke.Thickness = 1.2
-	AvatarStroke.Color = Color3.fromRGB(150,0,255)
+	AvatarStroke.Color = Color3.fromRGB(170,120,60)
 
 	local Avatar = Instance.new("ImageLabel")
 	Avatar.Parent = AvatarFrame
@@ -2260,14 +2193,14 @@ function Tab:AddInfoBruton()
 	local TextStroke = Instance.new("UIStroke")
 	TextStroke.Parent = TextFrame
 	TextStroke.Thickness = 1
-	TextStroke.Color = Color3.fromRGB(120,0,200)
+	TextStroke.Color = Color3.fromRGB(140,95,45)
 
 	local InfoImage = Instance.new("ImageLabel")
 	InfoImage.Parent = TextFrame
 	InfoImage.Size = UDim2.new(1,0,1,0)
 	InfoImage.BackgroundTransparency = 1
 	InfoImage.ImageTransparency = 0.85
-	InfoImage.Image = "rbxassetid://92969395163617"
+	InfoImage.Image = "rbxassetid://"  --funk
 	InfoImage.ScaleType = Enum.ScaleType.Crop
 	Instance.new("UICorner", InfoImage).CornerRadius = UDim.new(0,12)
 
