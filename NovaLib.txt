@@ -660,7 +660,7 @@ local RotatingImage = Create("ImageLabel", WindowBackground, {
 	Position = UDim2.new(0.5, 0, 0.5, 0),
 	AnchorPoint = Vector2.new(0.5, 0.5),
 	BackgroundTransparency = 1,
-	Image = "rbxassetid://",
+	Image = "rbxassetid://121931721824805",
 	ImageTransparency = 0.2,
 	ScaleType = Enum.ScaleType.Crop,
 	Rotation = 0,
@@ -1870,6 +1870,140 @@ end)
 			function DiscordInvite:Visible(...) Funcs:ToggleVisible(InviteHolder, ...) end
 			return DiscordInvite
 		end
+		function Tab:AddInfoBruton()
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+
+	local LocalPlayer = Players.LocalPlayer
+
+	local Frame = Instance.new("Frame")
+	Frame.Parent = Container
+	Frame.Size = UDim2.new(1, -20, 0, 160)
+	Frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
+	Frame.BorderSizePixel = 0
+	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,18)
+
+	local Stroke = Instance.new("UIStroke")
+	Stroke.Parent = Frame
+	Stroke.Thickness = 1.6
+	Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	Stroke.Color = Color3.new(1,1,1)
+
+	local Gradient = Instance.new("UIGradient")
+	Gradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(60,140,255)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(40,110,220)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))
+	}
+	Gradient.Parent = Stroke
+
+	RunService.Heartbeat:Connect(function(dt)
+		Gradient.Rotation = (Gradient.Rotation + 80 * dt) % 360
+	end)
+
+	local AvatarFrame = Instance.new("Frame")
+	AvatarFrame.Parent = Frame
+	AvatarFrame.Size = UDim2.new(0,78,0,78)
+	AvatarFrame.Position = UDim2.new(0,16,0.5,0)
+	AvatarFrame.AnchorPoint = Vector2.new(0,0.5)
+	AvatarFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+	AvatarFrame.BorderSizePixel = 0
+	Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1,0)
+
+	local AvatarStroke = Instance.new("UIStroke")
+	AvatarStroke.Parent = AvatarFrame
+	AvatarStroke.Thickness = 1.2
+	AvatarStroke.Color = Color3.fromRGB(60,140,255)
+
+	local Avatar = Instance.new("ImageLabel")
+	Avatar.Parent = AvatarFrame
+	Avatar.Size = UDim2.new(1,-6,1,-6)
+	Avatar.Position = UDim2.new(0.5,0,0.5,0)
+	Avatar.AnchorPoint = Vector2.new(0.5,0.5)
+	Avatar.BackgroundTransparency = 1
+	Instance.new("UICorner", Avatar).CornerRadius = UDim.new(1,0)
+
+	Avatar.Image = Players:GetUserThumbnailAsync(
+		LocalPlayer.UserId,
+		Enum.ThumbnailType.HeadShot,
+		Enum.ThumbnailSize.Size180x180
+	)
+
+	local TextFrame = Instance.new("Frame")
+	TextFrame.Parent = Frame
+	TextFrame.Position = UDim2.new(0,110,0,12)
+	TextFrame.Size = UDim2.new(1,-125,1,-24)
+	TextFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
+	TextFrame.BorderSizePixel = 0
+	Instance.new("UICorner", TextFrame).CornerRadius = UDim.new(0,12)
+
+	local TextStroke = Instance.new("UIStroke")
+	TextStroke.Parent = TextFrame
+	TextStroke.Thickness = 1
+	TextStroke.Color = Color3.fromRGB(40,110,220)
+
+	local InfoImage = Instance.new("ImageLabel")
+	InfoImage.Parent = TextFrame
+	InfoImage.Size = UDim2.new(1,0,1,0)
+	InfoImage.BackgroundTransparency = 1
+	InfoImage.ImageTransparency = 0.85
+	InfoImage.Image = "rbxassetid://"
+	InfoImage.ScaleType = Enum.ScaleType.Crop
+	Instance.new("UICorner", InfoImage).CornerRadius = UDim.new(0,12)
+
+	local Text = Instance.new("TextLabel")
+	Text.Parent = TextFrame
+	Text.Size = UDim2.new(1,-16,1,-16)
+	Text.Position = UDim2.new(0.5,0,0.5,0)
+	Text.AnchorPoint = Vector2.new(0.5,0.5)
+	Text.BackgroundTransparency = 1
+	Text.TextWrapped = true
+	Text.TextXAlignment = Enum.TextXAlignment.Center
+	Text.TextYAlignment = Enum.TextYAlignment.Center
+	Text.Font = Enum.Font.GothamBold
+	Text.TextSize = 13
+	Text.LineHeight = 1.1
+	Text.TextColor3 = Color3.fromRGB(235,235,235)
+	Text.ZIndex = 2
+
+	local function getDate()
+		return os.date("%d/%m/%Y")
+	end
+
+	local function getClock()
+		return os.date("%H:%M:%S")
+	end
+
+	local startTime = os.time()
+
+	RunService.Heartbeat:Connect(function()
+		local e = os.time() - startTime
+		local h = math.floor(e / 3600)
+		local m = math.floor((e % 3600) / 60)
+		local s = e % 60
+
+		Text.Text =
+			"Welcome\n" ..
+			LocalPlayer.DisplayName .. "\n" ..
+			"@" .. LocalPlayer.Name .. "\n" ..
+			"ID: " .. LocalPlayer.UserId .. "\n" ..
+			getDate() .. "\n" ..
+			string.format("%02d:%02d:%02d", h, m, s) .. "\n" ..
+			getClock()
+	end)
+
+	local InfoBruton = {}
+
+	function InfoBruton:Visible(...)
+		Funcs:ToggleVisible(Frame, ...)
+	end
+
+	function InfoBruton:Destroy()
+		Frame:Destroy()
+	end
+
+	return InfoBruton
+end
 		return Tab
 	end
 	
