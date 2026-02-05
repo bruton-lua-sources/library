@@ -1915,6 +1915,13 @@ end)
 	AvatarStroke.Thickness = 1.2
 	AvatarStroke.Color = Color3.fromRGB(60,140,255)
 
+	local Glow = Instance.new("UIStroke")
+	Glow.Parent = AvatarFrame
+	Glow.Thickness = 6
+	Glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	Glow.Color = Color3.fromRGB(80,170,255)
+	Glow.Transparency = 0.4
+
 	local Avatar = Instance.new("ImageLabel")
 	Avatar.Parent = AvatarFrame
 	Avatar.Size = UDim2.new(1,-6,1,-6)
@@ -1947,7 +1954,7 @@ end)
 	InfoImage.Size = UDim2.new(1,0,1,0)
 	InfoImage.BackgroundTransparency = 1
 	InfoImage.ImageTransparency = 0.85
-	InfoImage.Image = "rbxassetid://"
+	InfoImage.Image = "rbxassetid://90913394971569"
 	InfoImage.ScaleType = Enum.ScaleType.Crop
 	Instance.new("UICorner", InfoImage).CornerRadius = UDim.new(0,12)
 
@@ -1976,7 +1983,7 @@ end)
 
 	local startTime = os.time()
 
-	RunService.Heartbeat:Connect(function()
+	RunService.Heartbeat:Connect(function(dt)
 		local e = os.time() - startTime
 		local h = math.floor(e / 3600)
 		local m = math.floor((e % 3600) / 60)
@@ -1990,6 +1997,10 @@ end)
 			getDate() .. "\n" ..
 			string.format("%02d:%02d:%02d", h, m, s) .. "\n" ..
 			getClock()
+
+		local pulse = (math.sin(tick()*2.2)+1)/2
+		Glow.Transparency = 0.25 + (pulse*0.55)
+		Glow.Thickness = 4 + (pulse*6)
 	end)
 
 	local InfoBruton = {}
