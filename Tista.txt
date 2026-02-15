@@ -166,7 +166,7 @@ local vu7 = {
 			280,
 		},
 		TabSize = 160,
-		Theme = "QuantumGlowGreen",
+		Theme = "red",
 	},
 	Settings = {},
 	Connection = {},
@@ -640,28 +640,7 @@ local vu115 = vu26("ScreenGui", vu5, {
 		Name = "Scale",
 	}),
 })
-local ClickSound = Instance.new("Sound", ScreenGui)
-ClickSound.SoundId = "rbxassetid://"
-ClickSound.Volume = 0.5
 
-local function PlaySound()
-    ClickSound:Play()
-end
-
-task.spawn(function()
-    task.wait(2)
-    for _, button in pairs(ScreenGui:GetDescendants()) do
-        if button:IsA("TextButton") or button:IsA("ImageButton") then
-            button.Activated:Connect(PlaySound)
-        end
-    end
-    ScreenGui.DescendantAdded:Connect(function(newButton)
-        if newButton:IsA("TextButton") or newButton:IsA("ImageButton") then
-            task.wait(0.1)
-            newButton.Activated:Connect(PlaySound)
-        end
-    end)
-end)
 local v116 = vu5
 local v117 = vu5.FindFirstChild(v116, vu115.Name)
 
@@ -1050,21 +1029,6 @@ function vu7.MakeWindow(_, P197)
 		}),
 		"Main"
 	)
-    local WindowBackground = Create("ImageLabel", MainFrame, {
-    Name = "WindowBackground",
-    Size = UDim2.new(1, 0, 1, 0),
-    Position = UDim2.new(0, 0, 0, 0),
-    BackgroundTransparency = 1,
-    Image = "rbxassetid://137219915900676", 
-    ImageTransparency = 0.2,
-    ScaleType = Enum.ScaleType.Crop,
-    ZIndex = 0
-    })
-Make("Corner", WindowBackground)
-
-Make("Gradient", MainFrame, {
-    Rotation = 45
-})
 	vu158("Gradient", vu202, {
 		Rotation = 45,
 	})
@@ -1110,7 +1074,7 @@ Make("Gradient", MainFrame, {
 		}),
 		"DarkText"
 	)
-	local v209 = P197.GlowSub or "👻 BRUTON HUB BROOKHAVEN RP 👻 "
+	local v209 = P197.GlowSub or " LOC4T HUB BROOKHAVEN RP  "
 	local v210 = P197.GlowSubColor or Color3.fromRGB(3, 255, 99)
 	local v211 = P197.GlowSubTitleColor or Color3.fromRGB(0, 0, 0)
 	local vu212 = vu26("Frame", vu206, {
@@ -1265,17 +1229,17 @@ Make("Gradient", MainFrame, {
 
 	function vu230.CloseBtn(_)
 		vu230:Dialog({
-			Title = "BRUTON HUB",
-			Text = "متاكد تريد تغلق سكربت ",
+			Title = "LOC4T HUB",
+			Text = "Tem certeza de que o script está fechado?  ",
 			Options = {
 				{
-					"تاكيد",
+					"sim",
 					function()
 						vu115:Destroy()
 					end,
 				},
 				{
-					"Cancel",
+					"não",
 				},
 			},
 		})
