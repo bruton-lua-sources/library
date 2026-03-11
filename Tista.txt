@@ -166,7 +166,7 @@ local vu7 = {
 			280,
 		},
 		TabSize = 160,
-		Theme = "red",
+		Theme = "QuantumGlow",
 	},
 	Settings = {},
 	Connection = {},
@@ -2963,7 +2963,7 @@ function vu7.MakeWindow(_, P197)
 			local v487 = P486[1] or P486.Name or (P486.Title or "Text Box")
 			local v488 = P486.Desc or (P486.Description or "")
 			local v489 = P486[2] or (P486.Default or "")
-			local v490 = P486[5] or (P486.PlaceholderText or "BRUTON")
+			local v490 = P486[5] or (P486.PlaceholderText or "LOC4T")
 			local v491 = P486[3] or (P486.ClearText or false)
 			local vu492 = vu83:GetCallback(P486, 4)
 
