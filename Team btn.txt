@@ -776,7 +776,7 @@ function redzlib:MakeWindow(Configs)
 		BackgroundTransparency = 0.03,
 		Name = "Hub"
 	}), "Main")
-	  local RunService = game:GetService("RunService")
+local RunService = game:GetService("RunService")
 
 local WindowBackground = Create("Frame", MainFrame, {
 	Name = "WindowBackground",
@@ -794,7 +794,7 @@ BorderFrame.Name = "BorderFrame"
 BorderFrame.Size = UDim2.new(1, -4, 1, -4)
 BorderFrame.Position = UDim2.new(0, 2, 0, 2)
 BorderFrame.BackgroundTransparency = 1
-BorderFrame.ZIndex = 1
+BorderFrame.ZIndex = 2
 BorderFrame.Parent = WindowBackground
 
 Make("Corner", BorderFrame)
@@ -824,7 +824,7 @@ local RotatingImage = Create("ImageLabel", WindowBackground, {
 	ImageTransparency = 0,
 	ScaleType = Enum.ScaleType.Crop,
 	Rotation = 0,
-	ZIndex = 0
+	ZIndex = 1 
 })
 
 Make("Corner", RotatingImage, UDim.new(0, 12))
