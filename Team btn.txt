@@ -816,7 +816,7 @@ BorderGradient.Parent = BorderStroke
 
 local RotatingImage = Create("ImageLabel", WindowBackground, {
 	Name = "RotatingImage",
-	Size = UDim2.new(0, 300, 0, 300),
+	Size = UDim2.new(1, 0, 1, 0), 
 	Position = UDim2.new(0.5, 0, 0.5, 0),
 	AnchorPoint = Vector2.new(0.5, 0.5),
 	BackgroundTransparency = 1,
@@ -824,7 +824,7 @@ local RotatingImage = Create("ImageLabel", WindowBackground, {
 	ImageTransparency = 0,
 	ScaleType = Enum.ScaleType.Crop,
 	Rotation = 0,
-	ZIndex = 1 
+	ZIndex = 1
 })
 
 Make("Corner", RotatingImage, UDim.new(0, 12))
@@ -834,6 +834,7 @@ local borderSpeed = 80
 RunService.Heartbeat:Connect(function(dt)
 	BorderGradient.Rotation = (BorderGradient.Rotation + borderSpeed * dt) % 360
 end)
+
 
 	Make("Gradient", MainFrame, {
 		Rotation = 45
