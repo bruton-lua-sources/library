@@ -1521,7 +1521,113 @@ end)
 			end
 			return Toggle
 		end
-		
+		function Tab:AddPhotoBruton(Configs)
+    local PhotoList = Configs.Photos or Configs[1] or {}
+    local CurrentIndex = 1
+    local TweenService = game:GetService("TweenService")
+    
+    local PhotoFrame = Create("Frame", Container, {
+        Name = "PhotoBrutonFrame",
+        Size = UDim2.new(1, -20, 0, 180),
+        BackgroundColor3 = Color3.fromRGB(0, 5, 20),
+        BorderSizePixel = 0,
+        LayoutOrder = #Container:GetChildren()
+    })
+    
+    local Stroke = Create("UIStroke", PhotoFrame, {
+        Color = Color3.fromRGB(15, 60, 90),
+        Thickness = 2,
+        ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    })
+    
+    local Corner = Create("UICorner", PhotoFrame, {
+        CornerRadius = UDim.new(0, 8)
+    })
+    
+    local MainImage = Create("ImageLabel", PhotoFrame, {
+        Size = UDim2.new(1, -110, 1, -20),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundTransparency = 1,
+        ScaleType = Enum.ScaleType.Fit,
+        ImageTransparency = 0
+    })
+    
+    local Gradient = Create("UIGradient", Stroke, {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 106, 178)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 163, 226)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(36, 199, 255)),
+        })
+    })
+
+    local function UpdatePhoto()
+        local FadeOut = TweenService:Create(MainImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 1})
+        local FadeIn = TweenService:Create(MainImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {ImageTransparency = 0})
+        
+        FadeOut:Play()
+        FadeOut.Completed:Connect(function()
+            MainImage.Image = "rbxassetid://" .. tostring(PhotoList[CurrentIndex] or "")
+            FadeIn:Play()
+        end)
+    end
+
+    task.spawn(function()
+        local assets = {}
+        for _, id in pairs(PhotoList) do
+            local img = Instance.new("ImageLabel")
+            img.Image = "rbxassetid://" .. tostring(id)
+            table.insert(assets, img)
+        end
+        game:GetService("ContentProvider"):PreloadAsync(assets)
+        UpdatePhoto()
+    end)
+
+    local LeftBtn = Create("TextButton", PhotoFrame, {
+        Size = UDim2.new(0, 50, 1, 0),
+        Position = UDim2.new(0, 0, 0, 0),
+        BackgroundTransparency = 1,
+        Text = "<",
+        TextColor3 = Color3.fromRGB(0, 204, 255),
+        TextSize = 30,
+        Font = Enum.Font.GothamBold
+    })
+
+    local RightBtn = Create("TextButton", PhotoFrame, {
+        Size = UDim2.new(0, 50, 1, 0),
+        Position = UDim2.new(1, -50, 0, 0),
+        BackgroundTransparency = 1,
+        Text = ">",
+        TextColor3 = Color3.fromRGB(0, 204, 255),
+        TextSize = 30,
+        Font = Enum.Font.GothamBold
+    })
+
+    LeftBtn.Activated:Connect(function()
+        CurrentIndex = (CurrentIndex == 1) and #PhotoList or CurrentIndex - 1
+        UpdatePhoto()
+    end)
+
+    RightBtn.Activated:Connect(function()
+        CurrentIndex = (CurrentIndex == #PhotoList) and 1 or CurrentIndex + 1
+        UpdatePhoto()
+    end)
+
+    local PhotoControl = {}
+    function PhotoControl:Add(ID) 
+        table.insert(PhotoList, ID) 
+        game:GetService("ContentProvider"):PreloadAsync({"rbxassetid://" .. tostring(ID)})
+    end
+    function PhotoControl:Set(Index) 
+        if PhotoList[Index] then 
+            CurrentIndex = Index 
+            UpdatePhoto() 
+        end 
+    end
+    function PhotoControl:Destroy() PhotoFrame:Destroy() end
+    return PhotoControl
+end
+
 		function Tab:AddDropdown(Configs)
 local DName = Configs[1] or Configs.Name or Configs.Title or "Dropdown"
 local DDesc = Configs.Desc or Configs.Description or ""
@@ -2269,92 +2375,7 @@ end
 			function DiscordInvite:Visible(...) Funcs:ToggleVisible(InviteHolder, ...) end
 			return DiscordInvite
 		end
-		function Tab:AddPhotoBruton(Configs)
-    local PhotoList = Configs.Photos or Configs[1] or {}
-    local CurrentIndex = 1
-    
-    local PhotoFrame = Create("Frame", Container, {
-        Name = "PhotoBrutonFrame",
-        Size = UDim2.new(1, -20, 0, 245),
-        BackgroundColor3 = Color3.fromRGB(0, 5, 20),
-        BorderSizePixel = 0
-    })
-    
-    local Stroke = Create("UIStroke", PhotoFrame, {
-        Color = Color3.fromRGB(15, 60, 90),
-        Thickness = 2,
-        ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    })
-    
-    local Corner = Create("UICorner", PhotoFrame, {
-        CornerRadius = UDim.new(0, 8)
-    })
-    
-    local MainImage = Create("ImageLabel", PhotoFrame, {
-        Size = UDim2.new(1, -60, 1, -20),
-        Position = UDim2.new(0.5, 0, 0.5, 0),
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        BackgroundTransparency = 1,
-        ScaleType = Enum.ScaleType.Fit,
-        Image = "rbxassetid://" .. (PhotoList[1] or 0)
-    })
-    
-    local Gradient = Create("UIGradient", Stroke, {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 106, 178)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 163, 226)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(36, 199, 255)),
-        })
-    })
-
-    local function UpdatePhoto()
-        MainImage.Image = "rbxassetid://" .. tostring(PhotoList[CurrentIndex])
-    end
-
-    local LeftBtn = Create("TextButton", PhotoFrame, {
-        Size = UDim2.new(0, 30, 1, 0),
-        Position = UDim2.new(0, 0, 0, 0),
-        BackgroundTransparency = 1,
-        Text = "<",
-        TextColor3 = Color3.fromRGB(0, 204, 255),
-        TextSize = 25,
-        Font = Enum.Font.GothamBold
-    })
-
-    local RightBtn = Create("TextButton", PhotoFrame, {
-        Size = UDim2.new(0, 30, 1, 0),
-        Position = UDim2.new(1, -30, 0, 0),
-        BackgroundTransparency = 1,
-        Text = ">",
-        TextColor3 = Color3.fromRGB(0, 204, 255),
-        TextSize = 25,
-        Font = Enum.Font.GothamBold
-    })
-
-    LeftBtn.Activated:Connect(function()
-        CurrentIndex = CurrentIndex - 1
-        if CurrentIndex < 1 then CurrentIndex = #PhotoList end
-        UpdatePhoto()
-    end)
-
-    RightBtn.Activated:Connect(function()
-        CurrentIndex = CurrentIndex + 1
-        if CurrentIndex > #PhotoList then CurrentIndex = 1 end
-        UpdatePhoto()
-    end)
-
-    local PhotoControl = {}
-    function PhotoControl:Add(ID) table.insert(PhotoList, ID) end
-    function PhotoControl:Set(Index) 
-        if PhotoList[Index] then 
-            CurrentIndex = Index 
-            UpdatePhoto() 
-        end 
-    end
-    function PhotoControl:Destroy() PhotoFrame:Destroy() end
-    return PhotoControl
-end
-
+		
 		return Tab
 	end
 	
